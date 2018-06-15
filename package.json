@@ -1,5 +1,5 @@
 {
-  "name": "angular-component",
+  "name": "@ws/angular-component",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
