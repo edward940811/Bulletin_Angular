@@ -17,3 +17,11 @@ import { DemoModule } from '@ws/angular-component';
   ],
 })
 ```
+
+``` html
+<app-demo></app-demo>
+```
+
+# How to develop
+
+generate your own `module`, and generate component/service/directive..etc 
