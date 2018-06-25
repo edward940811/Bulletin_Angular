@@ -1,0 +1,71 @@
+<p-panel >
+  <p-header>
+     待辦事項
+  </p-header>
+  <h3>Dynamic Columns</h3>
+    <p-table [value]="subjects">
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngFor="let col of cols">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-subject>
+            <tr>
+                <td >{{subject.Top}}</td>
+                <td >{{subject.Type}}</td>
+                <td >{{subject.Name}}</td>
+                <td >{{subject.Date}}</td>
+                <td >
+                    <button type="text" (click)="showEdit()" pButton  label="Show"></button>
+                    <button type="text" (click)="showNotification()" pButton label="Notify"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>
+
+<p-dialog header="Title" [(visible)]="EditDisplay" modal="true" [dismissableMask]="true">
+    <p-header>
+        編輯事項
+    </p-header>
+    <h2>2018-Q2 法規鑑別</h2>
+    <div class="ui-inputgroup">
+        <p>類型: <input type="text" pInputText placeholder="Keyword"></p>
+    </div>
+    <div class="ui-inputgroup">
+        <p>描述: <input type="text" pInputText placeholder="Keyword"></p>
+    </div>
+    <div class="ui-inputgroup">
+        <p>相關網址: <input type="text" pInputText placeholder="Keyword"></p>
+    </div>
+</p-dialog>
+
+<p-dialog header="Title" [(visible)]="NotifyDisplay" modal="true" [dismissableMask]="true">
+        <p-header>
+            設定提醒
+        </p-header>
+        <h2>2018-Q2 法規鑑別</h2>    
+        <div class="ui-g" style="width:250px;margin-bottom:10px">
+                提醒啟用: 
+                <div class="ui-g-12"><p-radioButton name="notifygroup" value="on" [(ngModel)]="notifyGroupSelectedValue"></p-radioButton>開啟</div>
+                <div class="ui-g-12"><p-radioButton name="notifygroup" value="off" [(ngModel)]="notifyGroupSelectedValue"></p-radioButton>關閉</div>
+        </div>
+        <div>
+                <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> 一次性提醒 <br>              
+                <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{date3|date}}</span>
+        </div>
+        <div>
+                <p-radioButton name="groupname" value="val1" [(ngModel)]="selectedValue"></p-radioButton> 循環提醒 <br>
+                <p>每年 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedMonth"></p-dropdown> 月 <p-dropdown [autoWidth]= "false" [options]="Dates" [(ngModel)]="selectedDate"></p-dropdown> 日</p>
+                <p>每月 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedMonth"></p-dropdown>日</p>
+                <p>每逢 星期 <p-dropdown [autoWidth]= "false" [options]="Weekdays" [(ngModel)]="selectedWeekday"></p-dropdown></p>
+        </div>
+        <div>
+            <p-checkbox [(ngModel)]="setExpand" binary ="true"></p-checkbox>      
+            <div *ngIf="setExpand">
+                <app-mail-form></app-mail-form>
+            </div>
+        </div>
+</p-dialog>
