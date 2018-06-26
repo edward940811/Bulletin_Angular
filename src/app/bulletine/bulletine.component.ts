@@ -1,16 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
 import {SelectItem} from 'primeng/api';
 import {Subjects} from '../../Subjects'
+
+interface Date{
+  month: string;
+  date: string;
+}
 
 @Component({
   selector: 'app-bulletine',
   templateUrl: './bulletine.component.html',
   styleUrls: ['./bulletine.component.scss']
 })
+
 export class BulletineComponent implements OnInit {
 
   subjects : any;
   cols: any[];
+  selectedperYear: Date = {month : "" , date : ""};
 
   //DatePicker
   Months: any[] = [{label: "請選擇", value : null}];
@@ -23,10 +31,14 @@ export class BulletineComponent implements OnInit {
       this.Weekdays.push({label: i,value: i})
     }
     for(var i=1;i<=12;i++ ){
-      this.Months.push({label: i,value: i})
+      if(i<10)
+      var k = "0" + i;
+      this.Months.push({label: i,value: k})
     }
     for(var i=1;i<=31;i++ ){
-      this.Dates.push({label: i,value: i})
+      if(i<10)
+      var k = "0" + i;
+      this.Dates.push({label: i,value: k})
     }
   }
 
@@ -40,14 +52,21 @@ export class BulletineComponent implements OnInit {
   notifyGroupSelectedValue: string[];
   NotifyDisplay = false;
   setExpand  = false;
+  Notify = true;
+  
+  selectedCategories: string[] = ['Notify'];
   showNotification() {
     this.NotifyDisplay = true;
   }
 
+  //Post Request
+  DateErrorMessage : string;
+  Post()  {
+    if(!moment("2020-"+this.selectedperYear.month +"-"+ this.selectedperYear.date).isValid()){
+      this.DateErrorMessage = "Please Enter a valid date";
+        }
 
-  //checkbox property
-  Notify = true;
-  selectedCategories: string[] = ['Notify'];
+  }
 
   ngOnInit() {
   

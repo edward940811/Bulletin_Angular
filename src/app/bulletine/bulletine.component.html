@@ -23,6 +23,8 @@
                 </td>
             </tr>
         </ng-template>
+        <button pButton type="button" (click)="count()" label="Warning"  class="ui-button-warning"></button>
+
     </p-table>
 </p-panel>
 
@@ -40,6 +42,8 @@
     <div class="ui-inputgroup">
         <p>相關網址: <input type="text" pInputText placeholder="Keyword"></p>
     </div>
+    <button pButton type="button" (click)="count()" label="Warning"  class="ui-button-warning"></button>
+
 </p-dialog>
 
 <p-dialog header="Title" [(visible)]="NotifyDisplay" modal="true" [dismissableMask]="true">
@@ -53,19 +57,27 @@
                 <div class="ui-g-12"><p-radioButton name="notifygroup" value="off" [(ngModel)]="notifyGroupSelectedValue"></p-radioButton>關閉</div>
         </div>
         <div>
-                <p-checkbox name="groupname" value="val1" [(ngModel)]="selectedValues"></p-checkbox> 一次性提醒 <br>              
+                <p-radioButton name="yearAnnounce" value="on" [(ngModel)]="selectedValue"></p-radioButton> 一次性提醒 <br>
                 <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{date3|date}}</span>
         </div>
         <div>
-                <p-radioButton name="groupname" value="val1" [(ngModel)]="selectedValue"></p-radioButton> 循環提醒 <br>
-                <p>每年 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedMonth"></p-dropdown> 月 <p-dropdown [autoWidth]= "false" [options]="Dates" [(ngModel)]="selectedDate"></p-dropdown> 日</p>
-                <p>每月 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedMonth"></p-dropdown>日</p>
-                <p>每逢 星期 <p-dropdown [autoWidth]= "false" [options]="Weekdays" [(ngModel)]="selectedWeekday"></p-dropdown></p>
+                <p-radioButton name="yearAnnnounce" value="off" [(ngModel)]="selectedValue"></p-radioButton> 循環提醒 <br>
+                <p><p-checkbox name="recursive" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+                每年 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedperYear.month"></p-dropdown> 月 <p-dropdown [autoWidth]= "false" [options]="Dates" [(ngModel)]="selectedperYear.date"></p-dropdown> 日</p>
+                <p><p-checkbox name="recursive" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+                每月 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedperMonth"></p-dropdown>日</p>
+                <p><p-checkbox name="recursive" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+                每逢 星期 <p-dropdown [autoWidth]= "false" [options]="Weekdays" [(ngModel)]="selectedperWeekday"></p-dropdown></p>
         </div>
         <div>
-            <p-checkbox [(ngModel)]="setExpand" binary ="true"></p-checkbox>      
+            信件通知
+            <p>
+                <p-checkbox [(ngModel)]="setExpand" binary ="true"></p-checkbox>
+            </p>      
             <div *ngIf="setExpand">
                 <app-mail-form></app-mail-form>
             </div>
         </div>
+        <button pButton type="button" (click)="Post()" label="Warning"  class="ui-button-warning"></button>
+
 </p-dialog>
