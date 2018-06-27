@@ -1,8 +1,13 @@
-<p-panel >
-  <p-header>
-     待辦事項
-  </p-header>
-  <h3>Dynamic Columns</h3>
+<p-panel>
+    <p-header>
+        待辦事項
+    </p-header>
+    <h3>
+        Dynamic Columns
+        <div style="float:right;">
+            <p-button label="Click" (onClick)="showTodo()"></p-button>
+        </div>
+    </h3>
     <p-table [value]="subjects">
         <ng-template pTemplate="header">
             <tr>
@@ -13,71 +18,131 @@
         </ng-template>
         <ng-template pTemplate="body" let-subject>
             <tr>
-                <td >{{subject.Top}}</td>
-                <td >{{subject.Type}}</td>
-                <td >{{subject.Name}}</td>
-                <td >{{subject.Date}}</td>
-                <td >
-                    <button type="text" (click)="showEdit()" pButton  label="Show"></button>
+                <td>{{subject.Top}}</td>
+                <td>{{subject.Type}}</td>
+                <td>{{subject.Name}}</td>
+                <td>{{subject.Date}}</td>
+                <td>
+                    <button type="text" (click)="showEdit()" pButton label="Show"></button>
                     <button type="text" (click)="showNotification()" pButton label="Notify"></button>
                 </td>
             </tr>
         </ng-template>
-        <button pButton type="button" (click)="count()" label="Warning"  class="ui-button-warning"></button>
+        <button pButton type="button" (click)="count()" label="Warning" class="ui-button-warning"></button>
 
     </p-table>
 </p-panel>
 
+<!-- 加新事項 -->
+<p-dialog header="新增待辦事項" [(visible)]="TodoDisplay" modal="true" [dismissableMask]="true">
+    <p-header>
+        新增待辦事項
+    </p-header>
+
+    <div>
+        置頂:
+        <p-checkbox [(ngModel)]="todoitem.Top" binary="true"></p-checkbox>
+    </div>
+    <div class="ui-inputgroup">
+        <p>名稱:
+                <input type="text" class="form-control" id="name"
+                 [(ngModel)]="todoitem.Name" name="name">
+        </p>
+    </div>
+    <div class="ui-inputgroup">
+        <p>描述:
+                <input type="text" class="form-control" id="name"
+                [(ngModel)]="todoitem.Description" name="name">
+        </p>
+    </div>
+    <div class="ui-inputgroup">
+        <p>相關網址:
+                <input type="text" class="form-control" id="name"
+                [(ngModel)]="todoitem.RelatedUrl" name="name">
+        </p>
+    </div>
+    <div>
+        <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
+            auto="true" chooseLabel="Browse"></p-fileUpload>
+    </div>
+    <button pButton type="submit" (click)="TodoPost()" label="Warning" class="ui-button-warning"></button>
+
+</p-dialog>
+
+<!-- 編輯事項 -->
 <p-dialog header="Title" [(visible)]="EditDisplay" modal="true" [dismissableMask]="true">
     <p-header>
         編輯事項
     </p-header>
     <h2>2018-Q2 法規鑑別</h2>
     <div class="ui-inputgroup">
-        <p>類型: <input type="text" pInputText placeholder="Keyword"></p>
+        <p>類型:
+            <input type="text" pInputText placeholder="Keyword">
+        </p>
     </div>
     <div class="ui-inputgroup">
-        <p>描述: <input type="text" pInputText placeholder="Keyword"></p>
+        <p>描述:
+            <input type="text" pInputText placeholder="Keyword">
+        </p>
     </div>
     <div class="ui-inputgroup">
-        <p>相關網址: <input type="text" pInputText placeholder="Keyword"></p>
+        <p>相關網址:
+            <input type="text" pInputText placeholder="Keyword">
+        </p>
     </div>
-    <button pButton type="button" (click)="count()" label="Warning"  class="ui-button-warning"></button>
+    <div>
+        <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
+            auto="true" chooseLabel="Browse"></p-fileUpload>
+    </div>
+    <button pButton type="button" (click)="count()" label="Warning" class="ui-button-warning"></button>
 
 </p-dialog>
 
 <p-dialog header="Title" [(visible)]="NotifyDisplay" modal="true" [dismissableMask]="true">
-        <p-header>
-            設定提醒
-        </p-header>
-        <h2>2018-Q2 法規鑑別</h2>    
-        <div class="ui-g" style="width:250px;margin-bottom:10px">
-                提醒啟用: 
-                <div class="ui-g-12"><p-radioButton name="notifygroup" value="on" [(ngModel)]="notifyGroupSelectedValue"></p-radioButton>開啟</div>
-                <div class="ui-g-12"><p-radioButton name="notifygroup" value="off" [(ngModel)]="notifyGroupSelectedValue"></p-radioButton>關閉</div>
+    <p-header>
+        設定提醒
+    </p-header>
+    <h2>2018-Q2 法規鑑別</h2>
+    <div class="ui-g" style="width:250px;margin-bottom:10px">
+        提醒啟用:
+        <div class="ui-g-12">
+            <p-radioButton name="notifygroup" value="on" [(ngModel)]="notifyGroupSelectedValue"></p-radioButton>開啟</div>
+        <div class="ui-g-12">
+            <p-radioButton name="notifygroup" value="off" [(ngModel)]="notifyGroupSelectedValue"></p-radioButton>關閉</div>
+    </div>
+    <div>
+        <p-radioButton name="yearAnnounce" value="on" [(ngModel)]="selectedValue"></p-radioButton> 一次性提醒
+        <br>
+        <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar>
+        <span style="margin-left:35px">{{date3|date}}</span>
+    </div>
+    <div>
+        <p-radioButton name="yearAnnnounce" value="off" [(ngModel)]="selectedValue"></p-radioButton> 循環提醒
+        <br>
+        <p>
+            <p-checkbox name="recursive" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
+            每年
+            <p-dropdown [autoWidth]="false" [options]="Months" [(ngModel)]="selectedperYear.month"></p-dropdown> 月
+            <p-dropdown [autoWidth]="false" [options]="Dates" [(ngModel)]="selectedperYear.date"></p-dropdown> 日</p>
+        <p>
+            <p-checkbox name="recursive" value="val2" [(ngModel)]="selectedValues"></p-checkbox>
+            每月
+            <p-dropdown [autoWidth]="false" [options]="Months" [(ngModel)]="selectedperMonth"></p-dropdown>日</p>
+        <p>
+            <p-checkbox name="recursive" value="val3" [(ngModel)]="selectedValues"></p-checkbox>
+            每逢 星期
+            <p-dropdown [autoWidth]="false" [options]="Weekdays" [(ngModel)]="selectedperWeekday"></p-dropdown>
+        </p>
+    </div>
+    <div>
+        信件通知
+        <p>
+            <p-checkbox [(ngModel)]="setExpand" binary="true"></p-checkbox>
+        </p>
+        <div *ngIf="setExpand">
+            <app-mail-form></app-mail-form>
         </div>
-        <div>
-                <p-radioButton name="yearAnnounce" value="on" [(ngModel)]="selectedValue"></p-radioButton> 一次性提醒 <br>
-                <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar> <span style="margin-left:35px">{{date3|date}}</span>
-        </div>
-        <div>
-                <p-radioButton name="yearAnnnounce" value="off" [(ngModel)]="selectedValue"></p-radioButton> 循環提醒 <br>
-                <p><p-checkbox name="recursive" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
-                每年 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedperYear.month"></p-dropdown> 月 <p-dropdown [autoWidth]= "false" [options]="Dates" [(ngModel)]="selectedperYear.date"></p-dropdown> 日</p>
-                <p><p-checkbox name="recursive" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
-                每月 <p-dropdown [autoWidth]= "false" [options]="Months" [(ngModel)]="selectedperMonth"></p-dropdown>日</p>
-                <p><p-checkbox name="recursive" value="val1" [(ngModel)]="selectedValues"></p-checkbox>
-                每逢 星期 <p-dropdown [autoWidth]= "false" [options]="Weekdays" [(ngModel)]="selectedperWeekday"></p-dropdown></p>
-        </div>
-        <div>
-            信件通知
-            <p>
-                <p-checkbox [(ngModel)]="setExpand" binary ="true"></p-checkbox>
-            </p>      
-            <div *ngIf="setExpand">
-                <app-mail-form></app-mail-form>
-            </div>
-        </div>
-        <button pButton type="button" (click)="Post()" label="Warning"  class="ui-button-warning"></button>
+    </div>
+    <button pButton type="button" (click)="Post()" label="Warning" class="ui-button-warning"></button>
 
 </p-dialog>

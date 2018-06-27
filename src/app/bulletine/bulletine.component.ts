@@ -1,7 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { HttpHeaders } from '@angular/common/http';
+import { catchError, map, tap } from 'rxjs/operators';
 import {SelectItem} from 'primeng/api';
-import {Subjects} from '../../Subjects'
+import {TodoItem} from '../../TodoItem'
+import { HttpClient } from '@angular/common/http';
+
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json',
+    'Authorization': 'my-auth-token',
+    'Access-Control-Allow-Origin': 'http://localhost:52665',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+  })
+};
 
 interface Date{
   month: string;
@@ -16,17 +29,20 @@ interface Date{
 
 export class BulletineComponent implements OnInit {
 
+  Bulletineurl: string = "http://localhost:52665/api/bulletine";
   subjects : any;
   cols: any[];
   selectedperYear: Date = {month : "" , date : ""};
+  selectedperMonth: number;
+  selectedperWeekday: number;
+  todoitem :TodoItem = new TodoItem();
 
-  //DatePicker
+  //DatePicker option
   Months: any[] = [{label: "請選擇", value : null}];
   Weekdays: any[] = [{label: "請選擇", value : null}];
   Dates : any[] = [{label: "請選擇", value : null}];
 
-  constructor() {
-    //dropBox Property
+  constructor(private http:HttpClient) {
     for(var i=1;i<=7;i++ ){
       this.Weekdays.push({label: i,value: i})
     }
@@ -40,6 +56,12 @@ export class BulletineComponent implements OnInit {
       var k = "0" + i;
       this.Dates.push({label: i,value: k})
     }
+  }
+
+  //dialog new Todo Property
+  TodoDisplay = false;
+  showTodo() {
+    this.TodoDisplay = true;
   }
 
   //dialog Edit Property
@@ -59,13 +81,23 @@ export class BulletineComponent implements OnInit {
     this.NotifyDisplay = true;
   }
 
-  //Post Request
+  //TodoList Post Request
+  TodoPost(){
+    this.todoitem.Date = new Date();
+    console.log(this.todoitem);
+    
+    return this.http.post(this.Bulletineurl, this.todoitem, httpOptions).subscribe(
+     );
+  }
+
+  //Bulletin Post Request
   DateErrorMessage : string;
-  Post()  {
+  Post() {
     if(!moment("2020-"+this.selectedperYear.month +"-"+ this.selectedperYear.date).isValid()){
       this.DateErrorMessage = "Please Enter a valid date";
+      return;
         }
-
+      //return this.http.post(this.Bulletineurl, this.todoitem, httpOptions);
   }
 
   ngOnInit() {

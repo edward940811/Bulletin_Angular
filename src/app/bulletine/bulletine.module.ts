@@ -10,6 +10,8 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {CalendarModule} from 'primeng/calendar';
 import {DropdownModule} from 'primeng/dropdown';
 import {MailFormComponent} from '../mail-form/mail-form.component';
+import {FileUploadModule} from 'primeng/fileupload';
+
 
 @NgModule({
   imports: [
@@ -21,7 +23,8 @@ import {MailFormComponent} from '../mail-form/mail-form.component';
     CheckboxModule,
     FormsModule,
     RadioButtonModule,
-    CalendarModule
+    CalendarModule,
+    FileUploadModule
   ],
   declarations: [BulletineComponent,MailFormComponent ],
   exports: [ BulletineComponent ]
