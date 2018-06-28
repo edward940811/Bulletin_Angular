@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BulletineComponent } from './bulletine.component';
-import {PanelModule} from 'primeng/panel';
-import {TableModule} from 'primeng/table';
-import {DialogModule} from 'primeng/dialog';
-import {CheckboxModule} from 'primeng/checkbox';
-import { FormsModule }    from '@angular/forms';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {CalendarModule} from 'primeng/calendar';
-import {DropdownModule} from 'primeng/dropdown';
-import {MailFormComponent} from '../mail-form/mail-form.component';
-import {FileUploadModule} from 'primeng/fileupload';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
+import { PanelModule } from 'primeng/panel';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { TableModule } from 'primeng/table';
+import { BulletineComponent } from './bulletine/bulletine.component';
+import { MailFormComponent } from './mail-form/mail-form.component';
 
 
 @NgModule({
@@ -26,7 +26,7 @@ import {FileUploadModule} from 'primeng/fileupload';
     CalendarModule,
     FileUploadModule
   ],
-  declarations: [BulletineComponent,MailFormComponent ],
+  declarations: [BulletineComponent, MailFormComponent ],
   exports: [ BulletineComponent ]
 })
 export class BulletineModule { }

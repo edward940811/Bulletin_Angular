@@ -8,7 +8,7 @@
             <p-button label="Click" (onClick)="showTodo()"></p-button>
         </div>
     </h3>
-    <p-table [value]="subjects">
+    <p-table [value]="items">
         <ng-template pTemplate="header">
             <tr>
                 <th *ngFor="let col of cols">
@@ -28,13 +28,11 @@
                 </td>
             </tr>
         </ng-template>
-        <button pButton type="button" (click)="count()" label="Warning" class="ui-button-warning"></button>
-
     </p-table>
 </p-panel>
 
 <!-- 加新事項 -->
-<p-dialog header="新增待辦事項" [(visible)]="TodoDisplay" modal="true" [dismissableMask]="true">
+<p-dialog header="新增待辦事項" [(visible)]="showTodoModal" modal="true" [dismissableMask]="true">
     <p-header>
         新增待辦事項
     </p-header>
@@ -65,12 +63,12 @@
         <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
             auto="true" chooseLabel="Browse"></p-fileUpload>
     </div>
-    <button pButton type="submit" (click)="TodoPost()" label="Warning" class="ui-button-warning"></button>
+    <button pButton type="submit" (click)="addTodoItem()" label="Warning" class="ui-button-warning"></button>
 
 </p-dialog>
 
 <!-- 編輯事項 -->
-<p-dialog header="Title" [(visible)]="EditDisplay" modal="true" [dismissableMask]="true">
+<p-dialog header="Title" [(visible)]="showEditModal" modal="true" [dismissableMask]="true">
     <p-header>
         編輯事項
     </p-header>
@@ -98,7 +96,7 @@
 
 </p-dialog>
 
-<p-dialog header="Title" [(visible)]="NotifyDisplay" modal="true" [dismissableMask]="true">
+<p-dialog header="Title" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true">
     <p-header>
         設定提醒
     </p-header>
@@ -135,14 +133,13 @@
         </p>
     </div>
     <div>
-        信件通知
         <p>
-            <p-checkbox [(ngModel)]="setExpand" binary="true"></p-checkbox>
+            <p-checkbox [(ngModel)]="setExpand" binary="true" label="信件通知"></p-checkbox>
         </p>
         <div *ngIf="setExpand">
             <app-mail-form></app-mail-form>
         </div>
     </div>
-    <button pButton type="button" (click)="Post()" label="Warning" class="ui-button-warning"></button>
+    <button pButton type="button" (click)="saveNotify()" label="Warning" class="ui-button-warning"></button>
 
 </p-dialog>
