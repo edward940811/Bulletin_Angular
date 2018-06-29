@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { TodoItem } from './bulletine/TodoItem';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   items: any;
+  TodoList: TodoItem[];
+  geturl: string = 'http://localhost:52665/api/bulletine';
 
   addTodo($event) {
     // should call api
     this.items.push($event);
   }
+  getAllTodo() {
+      this.http.get<TodoItem[]>(this.geturl)
+      .subscribe(
+        response => {
+          this.TodoList = response;
+        }
+      );
+  }
 
   ngOnInit() {
+    this.getAllTodo();
     this.items = [
       {
         Top: 1,
@@ -29,4 +42,5 @@ export class AppComponent implements OnInit {
       }
     ];
   }
+  constructor(private  http: HttpClient) {}
 }
