@@ -32,6 +32,7 @@ export class BulletineComponent implements OnInit {
   setExpand = false;
   notifyGroupSelectedValue: string[];
   @Input() items: any;
+  @Input() TodoList: TodoItem[];
   @Output() addTodo = new EventEmitter();
   @Output() savingNotify = new EventEmitter();
   showTodo() {

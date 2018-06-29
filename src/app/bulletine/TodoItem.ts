@@ -1,6 +1,6 @@
 export class TodoItem {
     Top: boolean;
-    Type;
+    Type: string;
     Name: string;
     Date: Date;
     RelatedUrl: string;

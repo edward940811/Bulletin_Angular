@@ -8,20 +8,20 @@
             <p-button label="Click" (onClick)="showTodo()"></p-button>
         </div>
     </h3>
-    <p-table [value]="items">
+    <p-table [value]="TodoList">
         <ng-template pTemplate="header">
             <tr>
-                <th *ngFor="let col of cols">
-                    {{col.header}}
+                <th *ngFor="let col of columns">
+                    {{col}}
                 </th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-subject>
+        <ng-template pTemplate="body" let-TodoItem>
             <tr>
-                <td>{{subject.Top}}</td>
-                <td>{{subject.Type}}</td>
-                <td>{{subject.Name}}</td>
-                <td>{{subject.Date}}</td>
+                <td>{{TodoItem.top}}</td>
+                <td>{{TodoItem.type}}</td>
+                <td>{{TodoItem.description}}</td>
+                <td>{{TodoItem.Date}}</td>
                 <td>
                     <button type="text" (click)="showEdit()" pButton label="Show"></button>
                     <button type="text" (click)="showNotification()" pButton label="Notify"></button>
