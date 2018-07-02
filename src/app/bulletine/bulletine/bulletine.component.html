@@ -23,8 +23,8 @@
                 <td>{{TodoItem.description}}</td>
                 <td>{{TodoItem.Date}}</td>
                 <td>
-                    <button type="text" (click)="showEdit()" pButton label="Show"></button>
-                    <button type="text" (click)="showNotification()" pButton label="Notify"></button>
+                    <button type="text" (click)="showEdit(TodoItem)" pButton label="Show"></button>
+                    <button type="text" (click)="showNotification(TodoItem)" pButton label="Notify"></button>
                 </td>
             </tr>
         </ng-template>
@@ -39,24 +39,24 @@
 
     <div>
         置頂:
-        <p-checkbox [(ngModel)]="todoitem.Top" binary="true"></p-checkbox>
+        <p-checkbox [(ngModel)]="newtodoitem.Top" binary="true"></p-checkbox>
     </div>
     <div class="ui-inputgroup">
         <p>名稱:
                 <input type="text" class="form-control" id="name"
-                 [(ngModel)]="todoitem.Name" name="name">
+                 [(ngModel)]="newtodoitem.Name" name="name">
         </p>
     </div>
     <div class="ui-inputgroup">
         <p>描述:
                 <input type="text" class="form-control" id="name"
-                [(ngModel)]="todoitem.Description" name="name">
+                [(ngModel)]="newtodoitem.Description" name="name">
         </p>
     </div>
     <div class="ui-inputgroup">
         <p>相關網址:
                 <input type="text" class="form-control" id="name"
-                [(ngModel)]="todoitem.RelatedUrl" name="name">
+                [(ngModel)]="newtodoitem.RelatedUrl" name="name">
         </p>
     </div>
     <div>
@@ -96,6 +96,7 @@
 
 </p-dialog>
 
+<!-- 設定提醒 -->
 <p-dialog header="Title" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true">
     <p-header>
         設定提醒

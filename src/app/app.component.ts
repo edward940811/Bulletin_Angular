@@ -12,9 +12,16 @@ export class AppComponent implements OnInit {
   TodoList: TodoItem[];
   geturl: string = 'http://localhost:52665/api/bulletine';
 
+  updateTodoItem($event) {
+  }
   addTodo($event) {
     // should call api
     this.items.push($event);
+    console.log(this.items);
+    this.http.post(this.geturl, $event, {responseType: 'text'})
+      .subscribe(res => {
+        this.getAllTodo();
+      });
   }
   getAllTodo() {
       this.http.get<TodoItem[]>(this.geturl)

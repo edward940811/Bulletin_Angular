@@ -18,7 +18,7 @@ export class BulletineComponent implements OnInit {
   selectedperYear: Date = { month: '', date: '' };
   selectedperMonth: number;
   selectedperWeekday: number;
-  todoitem: TodoItem;
+  newtodoitem: TodoItem;
   months: SelectItem[] = [{ label: '請選擇', value: null }];
   Weekdays: SelectItem[] = [{ label: '請選擇', value: null }];
   Dates: SelectItem[] = [{ label: '請選擇', value: null }];
@@ -35,22 +35,25 @@ export class BulletineComponent implements OnInit {
   @Input() TodoList: TodoItem[];
   @Output() addTodo = new EventEmitter();
   @Output() savingNotify = new EventEmitter();
+  @Output() updatedTodo = new EventEmitter();
+
   showTodo() {
     this.showTodoModal = true;
   }
 
-  showEdit() {
+  showEdit(model) {
+    console.log(model);
     this.showEditModal = true;
   }
 
-  showNotification() {
+  showNotification(model) {
     this.showNotifyModal = true;
   }
 
   // TodoList Post Request
   addTodoItem() {
-    this.todoitem.Date = new Date();
-    this.addTodo.emit(this.todoitem);
+    this.newtodoitem.Date = new Date();
+    this.addTodo.emit(this.newtodoitem);
   }
   saveNotify() {
     if (
@@ -63,6 +66,9 @@ export class BulletineComponent implements OnInit {
     }
     // TODO: should have parameters ouptut
     this.savingNotify.emit();
+  }
+  updateTodoItem() {
+
   }
 
   ngOnInit() {
@@ -86,7 +92,7 @@ export class BulletineComponent implements OnInit {
       'Edit'
     ];
 
-    this.todoitem = {
+    this.newtodoitem = {
       Top: false,
       Type: '',
       Name: '',
