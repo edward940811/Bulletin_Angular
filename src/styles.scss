@@ -2,3 +2,17 @@
 label{
     cursor: pointer;
 }
+// 暫定
+.ui-dialog{
+    width: 450px;
+}
+.edit-dialog{
+    input{
+        width: 100%;
+    }
+    textarea{
+        width: 100%;
+        resize: none;
+        overflow: auto;
+    }
+}

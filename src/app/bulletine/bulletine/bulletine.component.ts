@@ -18,7 +18,7 @@ export class BulletineComponent implements OnInit {
   selectedperYear: Date = { month: '', date: '' };
   selectedperMonth: number;
   selectedperWeekday: number;
-  selectedTodoItem: TodoItem = new TodoItem;
+  selectedTodoItem: TodoItem = new TodoItem();
   newtodoitem: TodoItem;
   edittodoitem: TodoItem = new TodoItem;
   months: SelectItem[] = [{ label: '請選擇', value: null }];
@@ -28,7 +28,15 @@ export class BulletineComponent implements OnInit {
 
   showTodoModal = false;
   showEditModal = false;
-  showNotifyModal = false;
+  // dialog notify Property
+  // showNotifyModal = false;
+  // 先預設打開，好開發
+  showNotifyModal = true;
+  // showEditModal= true;
+  // temp setting
+  editTitle = '2018-Q2 法規鑑別';
+  notifyTitle = '2018-Q2 法規鑑別';
+  // temp setting end
   setExpand = false;
   notifyGroupSelectedValue: boolean;
   @Input() items: any;
@@ -43,23 +51,22 @@ export class BulletineComponent implements OnInit {
 
   showEdit(model) {
     this.selectedTodoItem = model;
+    console.log(this.selectedTodoItem);
+    console.log(model);
     this.showEditModal = true;
   }
 
   showNotification(model) {
-    this.selectedTodoItem = model;
-    this.notifyGroupSelectedValue = model.top.toString();
-    console.log(model.top);
+    // this.selectedTodoItem = model;
     this.showNotifyModal = true;
   }
-
-  // TodoList Post Request
-  addTodoItem() {
-    this.newtodoitem.Date = new Date();
-    this.addTodo.emit(this.newtodoitem);
-    this.showTodoModal = false;
+  saveEditModal() {
+    console.log('儲存要做的事情!');
   }
-  saveNotify() {
+  // TodoList Post Request
+
+  saveNotifyModal() {
+    console.log('儲存提醒的modal');
     if (
       !moment(
         '2020-' + this.selectedperYear.month + '-' + this.selectedperYear.date
@@ -78,7 +85,6 @@ export class BulletineComponent implements OnInit {
     this.updatedTodoItem.emit(this.selectedTodoItem);
     this.showEditModal = false;
   }
-
   ngOnInit() {
     for (let i = 1; i <= 7; i++) {
       this.Weekdays.push({ label: i.toString(), value: i });
@@ -92,13 +98,7 @@ export class BulletineComponent implements OnInit {
       this.Dates.push({ label: i.toString(), value: val });
     }
 
-    this.columns = [
-      'Top',
-      'Type',
-      'Name',
-      'Date',
-      'Edit'
-    ];
+    this.columns = ['Top', 'Type', 'Name', 'Date', 'Edit'];
 
     this.newtodoitem = {
       Id: 0,
