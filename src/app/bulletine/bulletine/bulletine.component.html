@@ -8,7 +8,10 @@
             <p-button label="Click" (onClick)="showTodo()"></p-button>
         </div>
     </h3>
-    <p-table [value]="TodoList">
+    <!-- 假資料 -->
+    <p-table [value]="items">
+        <!--真資料  -->
+        <!-- <p-table [value]="TodoList"> -->
         <ng-template pTemplate="header">
             <tr>
                 <th *ngFor="let col of columns">
@@ -32,113 +35,122 @@
     </p-table>
 </p-panel>
 
-<!-- 加新事項 -->
+<!-- 新增待辦事項 -->
 <p-dialog header="新增待辦事項" [(visible)]="showTodoModal" modal="true" [dismissableMask]="true">
-    <p-header>
-        新增待辦事項
-    </p-header>
+    <div class="ui-g">
+        <div class="ui-g-4">
+            置頂：
+        </div>
+        <div class="ui-g-8">
+            <p-checkbox [(ngModel)]="newtodoitem.Top" binary="true"></p-checkbox>
+        </div>
 
-    <div>
-        置頂:
-        <p-checkbox [(ngModel)]="newtodoitem.Top" binary="true"></p-checkbox>
-    </div>
-    <div class="ui-inputgroup">
-        <p>名稱:
+        <div class="ui-g-4">
+            名稱：
+        </div>
+        <div class="ui-g-8">
             <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.Name" name="name">
-        </p>
-    </div>
-    <div class="ui-inputgroup">
-        <p>描述:
+        </div>
+        <div class="ui-g-4">
+            描述：
+        </div>
+        <div class="ui-g-8">
             <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.Description" name="name">
-        </p>
-    </div>
-    <div class="ui-inputgroup">
-        <p>相關網址:
+        </div>
+        <div class="ui-g-4">
+            相關網址：
+        </div>
+        <div class="ui-g-8">
             <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.RelatedUrl" name="name">
-        </p>
+        </div>
+        <div class="ui-g-12">
+            <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
+                auto="true" chooseLabel="Browse"></p-fileUpload>
+        </div>
+        <p-button label="儲存" icon="fa fa-floppy-o" (click)="addTodoItem()" iconPos="left" (click)="saveEditModal()"></p-button>
     </div>
-    <div>
-        <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
-            auto="true" chooseLabel="Browse"></p-fileUpload>
-    </div>
-    <button pButton type="submit" (click)="addTodoItem()" label="Warning" class="ui-button-warning"></button>
-
+    <!-- <button pButton type="submit"  label="Warning" class="ui-button-warning"></button> -->
 </p-dialog>
 
 <!-- 編輯事項 -->
-<p-dialog header="Title" [(visible)]="showEditModal" modal="true" [dismissableMask]="true">
-    <p-header>
-        編輯事項
-    </p-header>
-    <h2>2018-Q2 法規鑑別</h2>
-    <div class="ui-inputgroup">
-        <p>類型:
-            <input type="text" pInputText [(ngModel)]="edittodoitem.Type" [value]= "selectedTodoItem.type">
-        </p>
+<p-dialog header="編輯事項" [(visible)]="showEditModal" modal="true" [dismissableMask]="true" styleClass="edit-dialog">
+    <h2>{{editTitle}}</h2>
+    <div class="ui-g">
+        <div class="ui-g-4">
+            類型:
+        </div>
+        <div class="ui-g-8">
+            <input type="text" pInputText [(ngModel)]="edittodoitem.Type" [value]="selectedTodoItem.type">
+        </div>
+        <div class="ui-g-4">
+            描述:
+        </div>
+        <div class="ui-g-8">
+            <textarea [rows]="5" pInputTextarea autoResize="autoResize" [(ngModel)]="edittodoitem.Description" [value]="selectedTodoItem.description"></textarea>
+        </div>
+        <div class="ui-g-4">
+            相關網址:
+        </div>
+        <div class="ui-g-8">
+            <input type="text" pInputText placeholder="testin">
+        </div>
+        <div>
+            <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
+                auto="true" chooseLabel="Browse"></p-fileUpload>
+        </div>
     </div>
-    <div class="ui-inputgroup">
-        <p>描述:
-            <input type="text" pInputText [(ngModel)]="edittodoitem.Description" [value]="selectedTodoItem.description">
-        </p>
-    </div>
-    <div class="ui-inputgroup">
-        <p>相關網址:
-            <input type="text" pInputText [placeholder]="testin">
-        </p>
-    </div>
-    <div>
-        <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
-            auto="true" chooseLabel="Browse"></p-fileUpload>
-    </div>
-    <button pButton type="button" (click)="update(selectedTodoItem)" label="Save" class="ui-button-warning"></button>
-
+    <!-- (click)="update(selectedTodoItem)" -->
+    <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="saveEditModal()"></p-button>
 </p-dialog>
 
 <!-- 設定提醒 -->
-<p-dialog header="Title" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true">
-    <p-header>
-        設定提醒
-    </p-header>
-    <h2>{{selectedTodoItem.Name}}</h2>
-    <div class="ui-g" style="width:250px;margin-bottom:10px">
-        提醒啟用:
-        <div class="ui-g-12">
-            <p-radioButton name="notifygroup" value= "true" [(ngModel)]="notifyGroupSelectedValue" label="開啟"></p-radioButton>
+<p-dialog header="設定提醒" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true" styleClass="notify-dialog">
+    <h2>{{notifyTitle}}</h2>
+    <div class="ui-g">
+        <div class="ui-g-4">
+            提醒啟用:
         </div>
-        <div class="ui-g-12">
-            <p-radioButton name="notifygroup" value= "false" [(ngModel)]="notifyGroupSelectedValue" label="關閉"></p-radioButton>
+        <div class="ui-g-4">
+            <p-radioButton name="notifygroup" value="on" [(ngModel)]="notifyGroupSelectedValue" label="開啟"></p-radioButton>
+        </div>
+        <div class="ui-g-4">
+            <p-radioButton name="notifygroup" value="off" [(ngModel)]="notifyGroupSelectedValue" label="關閉"></p-radioButton>
         </div>
     </div>
-    <div>
-        <p-radioButton name="yearAnnounce" value="on" [(ngModel)]="selectedValue" label="一次性提醒"></p-radioButton>
-        <br>
-        <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar>
-        <span style="margin-left:35px">{{date3|date}}</span>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-radioButton name="yearAnnounce" value="on" [(ngModel)]="selectedValue" label="一次性提醒"></p-radioButton>
+        </div>
+        <div class="ui-g-12">
+            <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar>
+            <span>{{date3|date}}</span>
+        </div>
     </div>
-    <div>
-        <p-radioButton name="yearAnnnounce" value="off" [(ngModel)]="selectedValue" label="循環提醒"></p-radioButton>
-        <br>
-        <p>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <p-radioButton name="yearAnnnounce" value="off" [(ngModel)]="selectedValue" label="循環提醒"></p-radioButton>
+        </div>
+        <div class="ui-g-12">
             <p-checkbox name="recursive" value="val1" label="每年" [(ngModel)]="selectedValues"></p-checkbox>
             <p-dropdown [autoWidth]="false" [options]="Months" label="月" [(ngModel)]="selectedperYear.month"></p-dropdown>
             <p-dropdown [autoWidth]="false" [options]="Dates" label="日" [(ngModel)]="selectedperYear.date"></p-dropdown>
-        </p>
-        <p>
+        </div>
+        <div class="ui-g-12">
             <p-checkbox name="recursive" value="val2" label="每月" [(ngModel)]="selectedValues"></p-checkbox>
-            <p-dropdown [autoWidth]="false" [options]="Months" [(ngModel)]="selectedperMonth"></p-dropdown>日</p>
-        <p>
+            <p-dropdown [autoWidth]="false" [options]="Months" [(ngModel)]="selectedperMonth"></p-dropdown>日
+        </div>
+        <div class="ui-g-12">
             <p-checkbox name="recursive" value="val3" [(ngModel)]="selectedValues" label="每逢 星期"></p-checkbox>
             <p-dropdown [autoWidth]="false" [options]="Weekdays" [(ngModel)]="selectedperWeekday"></p-dropdown>
-        </p>
+        </div>
     </div>
-    <div>
-        <p>
+    <div class="ui-g ">
+        <div class="ui-g-12">
             <p-checkbox [(ngModel)]="setExpand" binary="true" label="信件通知"></p-checkbox>
-        </p>
+        </div>
         <div *ngIf="setExpand">
             <app-mail-form></app-mail-form>
         </div>
     </div>
-    <button pButton type="button" (click)="saveNotify()" label="Warning" class="ui-button-warning"></button>
-
+    <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="saveNotifyModal()"></p-button>
 </p-dialog>
