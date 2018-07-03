@@ -57,7 +57,9 @@ export class BulletineComponent implements OnInit {
   }
 
   showNotification(model) {
-    // this.selectedTodoItem = model;
+    this.selectedTodoItem = model;
+    this.notifyGroupSelectedValue = model.top.toString();
+    console.log(model.top);
     this.showNotifyModal = true;
   }
   saveEditModal() {

@@ -68,13 +68,13 @@
             類型:
         </div>
         <div class="ui-g-8">
-            <input type="text" pInputText [placeholder]="selectedTodoItem.name">
+            <input type="text" pInputText [(ngModel)]="edittodoitem.Type" [value]= "selectedTodoItem.type"> 
         </div>
         <div class="ui-g-4">
             描述:
         </div>
         <div class="ui-g-8">
-            <textarea [rows]="5" pInputTextarea autoResize="autoResize"></textarea>
+            <textarea [rows]="5" pInputTextarea autoResize="autoResize" [(ngModel)]="edittodoitem.Description" [value]="selectedTodoItem.description"></textarea>
         </div>
         <div class="ui-g-4">
             相關網址:
@@ -87,6 +87,7 @@
                 auto="true" chooseLabel="Browse"></p-fileUpload>
         </div>
     </div>
+    <!-- (click)="update(selectedTodoItem)" -->
     <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="saveEditModal()"></p-button>
 </p-dialog>
 
