@@ -30,6 +30,8 @@ export class BulletineComponent implements OnInit {
   showEditModal = false;
   // dialog notify Property
   showNotifyModal = false;
+  // 先預設打開，好開發
+  // showNotifyModal= true;
   setExpand = false;
   notifyGroupSelectedValue: string[];
   @Input() items: any;
