@@ -49,14 +49,14 @@ export class BulletineComponent implements OnInit {
 
   showNotification(model) {
     this.selectedTodoItem = model;
-    this.notifyGroupSelectedValue = model.top.toString();
+    this.notifyGroupSelectedValue = model.notify.toString();
     console.log(model.top);
     this.showNotifyModal = true;
   }
 
   // TodoList Post Request
   addTodoItem() {
-    this.newtodoitem.Date = new Date();
+    this.newtodoitem.date = new Date();
     this.addTodo.emit(this.newtodoitem);
     this.showTodoModal = false;
   }
@@ -74,8 +74,8 @@ export class BulletineComponent implements OnInit {
   }
   update(model) {
     this.selectedTodoItem = model;
-    this.selectedTodoItem.Description = this.edittodoitem.Description;
-    this.selectedTodoItem.Type = this.edittodoitem.Type;
+    this.selectedTodoItem.description = this.edittodoitem.description;
+    this.selectedTodoItem.type = this.edittodoitem.type;
     this.updatedTodoItem.emit(this.selectedTodoItem);
     this.showEditModal = false;
   }
@@ -106,13 +106,15 @@ export class BulletineComponent implements OnInit {
     ];
 
     this.newtodoitem = {
-      Id: 0,
-      Top: false,
-      Type: '',
-      Name: '',
-      Date: new Date(),
-      RelatedUrl: '',
-      Description: ''
+      id: 0,
+      top: false,
+      type: '',
+      name: '',
+      date: new Date(),
+      relatedUrl: '',
+      description: '',
+      notify: false,
+      url: []
     };
   }
 
