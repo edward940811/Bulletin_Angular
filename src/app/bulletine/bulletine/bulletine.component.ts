@@ -18,6 +18,7 @@ export class BulletineComponent implements OnInit {
   selectedperYear: Date = { month: '', date: '' };
   selectedperMonth: number;
   selectedperWeekday: number;
+  selectedTodoItem: TodoItem = new TodoItem;
   newtodoitem: TodoItem;
   months: SelectItem[] = [{ label: '請選擇', value: null }];
   Weekdays: SelectItem[] = [{ label: '請選擇', value: null }];
@@ -42,18 +43,22 @@ export class BulletineComponent implements OnInit {
   }
 
   showEdit(model) {
+    this.selectedTodoItem = model;
     console.log(model);
     this.showEditModal = true;
   }
 
   showNotification(model) {
+    //this.selectedTodoItem = model;
     this.showNotifyModal = true;
+
   }
 
   // TodoList Post Request
   addTodoItem() {
     this.newtodoitem.Date = new Date();
     this.addTodo.emit(this.newtodoitem);
+    this.showTodoModal = false;
   }
   saveNotify() {
     if (

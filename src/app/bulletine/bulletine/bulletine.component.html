@@ -23,7 +23,7 @@
                 <td>{{TodoItem.description}}</td>
                 <td>{{TodoItem.Date}}</td>
                 <td>
-                    <button type="text" (click)="showEdit(TodoItem)" pButton label="Show"></button>
+                    <button type="text" (click)="showEdit(TodoItem)" pButton label="Edit"></button>
                     <button type="text" (click)="showNotification(TodoItem)" pButton label="Notify"></button>
                 </td>
             </tr>
@@ -75,17 +75,17 @@
     <h2>2018-Q2 法規鑑別</h2>
     <div class="ui-inputgroup">
         <p>類型:
-            <input type="text" pInputText placeholder="Keyword">
+            <input type="text" pInputText [placeholder]= "selectedTodoItem.name">
         </p>
     </div>
     <div class="ui-inputgroup">
         <p>描述:
-            <input type="text" pInputText placeholder="Keyword">
+            <input type="text" pInputText placeholder="selectedTodoItem.description">
         </p>
     </div>
     <div class="ui-inputgroup">
         <p>相關網址:
-            <input type="text" pInputText placeholder="Keyword">
+            <input type="text" pInputText placeholder="testin">
         </p>
     </div>
     <div>
