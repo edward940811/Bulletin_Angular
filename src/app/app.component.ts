@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TodoItem } from './bulletine/TodoItem';
+import { Options } from 'selenium-webdriver/edge';
+import { RequestOptions } from '@angular/http';
+
 
 @Component({
   selector: 'app-root',
@@ -10,11 +13,18 @@ import { TodoItem } from './bulletine/TodoItem';
 export class AppComponent implements OnInit {
   items: any;
   TodoList: TodoItem[];
-  editTodoItem: TodoItem;
+  TodoItem: TodoItem;
   geturl: string = 'http://localhost:52665/api/bulletine';
 
+  deleteTodoItem($event) {
+    this.TodoItem = $event;
+    console.log($event.id);
+    this.http.delete(this.geturl + '/' + $event.id)
+    .subscribe(res => {
+      this.getAllTodo();
+    });
+  }
   updateTodoItem($event) {
-    this.editTodoItem = $event;
     this.http.put(this.geturl, $event, {responseType: 'text'})
     .subscribe(res => {
       this.getAllTodo();

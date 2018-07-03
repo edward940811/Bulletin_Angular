@@ -36,6 +36,7 @@ export class BulletineComponent implements OnInit {
   @Output() addTodo = new EventEmitter();
   @Output() savingNotify = new EventEmitter();
   @Output() updatedTodoItem = new EventEmitter();
+  @Output() deleteTodoItem = new EventEmitter();
 
   showTodo() {
     this.showTodoModal = true;
@@ -77,6 +78,10 @@ export class BulletineComponent implements OnInit {
     this.selectedTodoItem.Type = this.edittodoitem.Type;
     this.updatedTodoItem.emit(this.selectedTodoItem);
     this.showEditModal = false;
+  }
+  delete(model) {
+    this.selectedTodoItem = model;
+    this.deleteTodoItem.emit(this.selectedTodoItem);
   }
 
   ngOnInit() {
