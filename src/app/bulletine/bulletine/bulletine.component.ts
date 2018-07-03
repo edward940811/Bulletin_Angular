@@ -68,6 +68,7 @@ export class BulletineComponent implements OnInit {
   // TodoList Post Request
 
   saveNotifyModal() {
+    console.log(this.items);
     console.log('儲存提醒的modal');
     if (
       !moment(
