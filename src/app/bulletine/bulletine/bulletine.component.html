@@ -8,7 +8,7 @@
             <p-button label="Click" (onClick)="showTodo()"></p-button>
         </div>
     </h3>
-    <p-table [value]="items">
+    <p-table [value]="TodoList">
         <ng-template pTemplate="header">
             <tr>
                 <th *ngFor="let col of columns">
@@ -72,24 +72,24 @@
     <h2>2018-Q2 法規鑑別</h2>
     <div class="ui-inputgroup">
         <p>類型:
-            <input type="text" pInputText [placeholder]= "selectedTodoItem.name">
+            <input type="text" pInputText [(ngModel)]="edittodoitem.Type" [value]= "selectedTodoItem.type">
         </p>
     </div>
     <div class="ui-inputgroup">
         <p>描述:
-            <input type="text" pInputText placeholder="selectedTodoItem.description">
+            <input type="text" pInputText [(ngModel)]="edittodoitem.Description" [value]="selectedTodoItem.description">
         </p>
     </div>
     <div class="ui-inputgroup">
         <p>相關網址:
-            <input type="text" pInputText placeholder="testin">
+            <input type="text" pInputText [placeholder]="testin">
         </p>
     </div>
     <div>
         <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
             auto="true" chooseLabel="Browse"></p-fileUpload>
     </div>
-    <button pButton type="button" (click)="count()" label="Warning" class="ui-button-warning"></button>
+    <button pButton type="button" (click)="update(selectedTodoItem)" label="Save" class="ui-button-warning"></button>
 
 </p-dialog>
 
@@ -98,14 +98,14 @@
     <p-header>
         設定提醒
     </p-header>
-    <h2>2018-Q2 法規鑑別</h2>
+    <h2>{{selectedTodoItem.Name}}</h2>
     <div class="ui-g" style="width:250px;margin-bottom:10px">
         提醒啟用:
         <div class="ui-g-12">
-            <p-radioButton name="notifygroup" value="on" [(ngModel)]="notifyGroupSelectedValue" label="開啟"></p-radioButton>
+            <p-radioButton name="notifygroup" value= "true" [(ngModel)]="notifyGroupSelectedValue" label="開啟"></p-radioButton>
         </div>
         <div class="ui-g-12">
-            <p-radioButton name="notifygroup" value="off" [(ngModel)]="notifyGroupSelectedValue" label="關閉"></p-radioButton>
+            <p-radioButton name="notifygroup" value= "false" [(ngModel)]="notifyGroupSelectedValue" label="關閉"></p-radioButton>
         </div>
     </div>
     <div>

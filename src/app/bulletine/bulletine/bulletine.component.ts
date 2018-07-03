@@ -20,25 +20,22 @@ export class BulletineComponent implements OnInit {
   selectedperWeekday: number;
   selectedTodoItem: TodoItem = new TodoItem;
   newtodoitem: TodoItem;
+  edittodoitem: TodoItem = new TodoItem;
   months: SelectItem[] = [{ label: '請選擇', value: null }];
   Weekdays: SelectItem[] = [{ label: '請選擇', value: null }];
   Dates: SelectItem[] = [{ label: '請選擇', value: null }];
 
-  // dialog new Todo Property
+
   showTodoModal = false;
-  // dialog Edit Property
   showEditModal = false;
-  // dialog notify Property
   showNotifyModal = false;
-  // 先預設打開，好開發
-  // showNotifyModal= true;
   setExpand = false;
-  notifyGroupSelectedValue: string[];
+  notifyGroupSelectedValue: boolean;
   @Input() items: any;
   @Input() TodoList: TodoItem[];
   @Output() addTodo = new EventEmitter();
   @Output() savingNotify = new EventEmitter();
-  @Output() updatedTodo = new EventEmitter();
+  @Output() updatedTodoItem = new EventEmitter();
 
   showTodo() {
     this.showTodoModal = true;
@@ -46,14 +43,14 @@ export class BulletineComponent implements OnInit {
 
   showEdit(model) {
     this.selectedTodoItem = model;
-    console.log(model);
     this.showEditModal = true;
   }
 
   showNotification(model) {
-    //this.selectedTodoItem = model;
+    this.selectedTodoItem = model;
+    this.notifyGroupSelectedValue = model.top.toString();
+    console.log(model.top);
     this.showNotifyModal = true;
-
   }
 
   // TodoList Post Request
@@ -74,8 +71,12 @@ export class BulletineComponent implements OnInit {
     // TODO: should have parameters ouptut
     this.savingNotify.emit();
   }
-  updateTodoItem() {
-
+  update(model) {
+    this.selectedTodoItem = model;
+    this.selectedTodoItem.Description = this.edittodoitem.Description;
+    this.selectedTodoItem.Type = this.edittodoitem.Type;
+    this.updatedTodoItem.emit(this.selectedTodoItem);
+    this.showEditModal = false;
   }
 
   ngOnInit() {
@@ -100,6 +101,7 @@ export class BulletineComponent implements OnInit {
     ];
 
     this.newtodoitem = {
+      Id: 0,
       Top: false,
       Type: '',
       Name: '',

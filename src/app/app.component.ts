@@ -10,9 +10,15 @@ import { TodoItem } from './bulletine/TodoItem';
 export class AppComponent implements OnInit {
   items: any;
   TodoList: TodoItem[];
+  editTodoItem: TodoItem;
   geturl: string = 'http://localhost:52665/api/bulletine';
 
   updateTodoItem($event) {
+    this.editTodoItem = $event;
+    this.http.put(this.geturl, $event, {responseType: 'text'})
+    .subscribe(res => {
+      this.getAllTodo();
+    });
   }
   addTodo($event) {
     // should call api
@@ -36,16 +42,16 @@ export class AppComponent implements OnInit {
     this.getAllTodo();
     this.items = [
       {
-        Top: 1,
-        Type: 2,
+        top: true,
+        type: 1,
         Name: 'hello',
-        Date: 1223
+        date: 1223
       },
       {
-        Top: 1,
-        Type: 2,
+        top: false,
+        type: 2,
         Name: 'hello',
-        Date: 1223
+        date: 1223
       }
     ];
   }
