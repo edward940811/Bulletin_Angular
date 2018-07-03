@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule} from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FileUploadModule } from 'primeng/fileupload';
+import { HttpModule } from '@angular/http';
 import {BulletineModule} from './bulletine/bulletine.module';
 import { TableDialogComponent } from './table-dialog/table-dialog.component';
 
@@ -14,6 +15,7 @@ import { TableDialogComponent } from './table-dialog/table-dialog.component';
     TableDialogComponent
   ],
   imports: [
+    HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
     FileUploadModule,

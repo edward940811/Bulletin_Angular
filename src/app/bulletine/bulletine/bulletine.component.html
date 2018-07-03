@@ -5,11 +5,11 @@
     <h3>
         Dynamic Columns
         <div style="float:right;">
-            <p-button label="Click" (onClick)="showTodo()"></p-button>
+            <p-button label="New" (onClick)="showTodo()"></p-button>
         </div>
     </h3>
     <!-- 假資料 -->
-    <p-table [value]="items">
+    <p-table [value]="TodoList">
         <!--真資料  -->
         <!-- <p-table [value]="TodoList"> -->
         <ng-template pTemplate="header">
@@ -24,7 +24,7 @@
                 <td>{{TodoItem.top}}</td>
                 <td>{{TodoItem.type}}</td>
                 <td>{{TodoItem.description}}</td>
-                <td>{{TodoItem.Date}}</td>
+                <td>{{TodoItem.date}}</td>
                 <td>
                     <button type="text" (click)="showEdit(TodoItem)" pButton label="Edit"></button>
                     <button type="text" (click)="showNotification(TodoItem)" pButton label="Notify"></button>
@@ -44,7 +44,12 @@
         <div class="ui-g-8">
             <p-checkbox [(ngModel)]="newtodoitem.Top" binary="true"></p-checkbox>
         </div>
-
+        <div class="ui-g-4">
+            類型：
+        </div>
+        <div class="ui-g-8">
+            <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.Type" name="name">
+        </div>
         <div class="ui-g-4">
             名稱：
         </div>
@@ -67,7 +72,7 @@
             <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
                 auto="true" chooseLabel="Browse"></p-fileUpload>
         </div>
-        <p-button label="儲存" icon="fa fa-floppy-o" (click)="addTodoItem()" iconPos="left" (click)="saveEditModal()"></p-button>
+        <p-button label="儲存" icon="fa fa-floppy-o" (click)="addTodoItem()" iconPos="left" ></p-button>
     </div>
     <!-- <button pButton type="submit"  label="Warning" class="ui-button-warning"></button> -->
 </p-dialog>
@@ -100,7 +105,7 @@
         </div>
     </div>
     <!-- (click)="update(selectedTodoItem)" -->
-    <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="saveEditModal()"></p-button>
+    <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="update(selectedTodoItem)"></p-button>
 </p-dialog>
 
 <!-- 設定提醒 -->
