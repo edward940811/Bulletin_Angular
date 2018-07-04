@@ -18,8 +18,10 @@ export class BulletineComponent implements OnInit {
   selectedperMonth: number;
   selectedperWeekday: number;
   selectedTodoItem: TodoItem = new TodoItem();
+  // 改為reactive form之後就用不到，要把它抽掉
   newtodoitem: TodoItem;
   edittodoitem: TodoItem = new TodoItem();
+  //
   months: SelectItem[] = [{ label: '請選擇', value: null }];
   Weekdays: SelectItem[] = [{ label: '請選擇', value: null }];
   Dates: SelectItem[] = [{ label: '請選擇', value: null }];
@@ -95,8 +97,11 @@ export class BulletineComponent implements OnInit {
 
   // TodoList Post Request
   addTodoItem() {
-    this.newtodoitem.date = new Date();
-    this.addTodo.emit(this.newtodoitem);
+    const today = new Date();
+    this.editForm.patchValue({
+      date: today
+    });
+    this.addTodo.emit(this.editForm.value);
     this.showTodoModal = false;
   }
   saveNotifyModal() {

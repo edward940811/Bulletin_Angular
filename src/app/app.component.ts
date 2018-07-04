@@ -33,11 +33,11 @@ export class AppComponent implements OnInit {
       this.getAllTodo();
     });
   }
-  addTodo($event) {
+  addTodo(event) {
     // should call api
-    this.items.push($event);
     console.log(this.items);
-    this.http.post(this.apiUrl, $event, {responseType: 'text'})
+    this.items = event;
+    this.http.post(this.apiUrl, event, {responseType: 'text'})
       .subscribe(res => {
         this.getAllTodo();
       });
