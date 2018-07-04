@@ -1,12 +1,23 @@
-<div>
-  <div>
-    收件人: <input type="text" pInputText placeholder="Keyword">
-    <p>多個收件可以 ',' 區隔</p>
+<div class="ui-g mail-form">
+  <div class="ui-g-4">
+    收件人：
   </div>
-  <div>
-    主旨: <input type="text" pInputText placeholder="Keyword">
+  <div class="ui-g-8">
+    <input type="text" pInputText>
+    <span>
+      多個收件可以 ',' 區隔
+    </span> 
   </div>
-  <div>
-    內容: <input type="text" pInputText placeholder="Keyword">
+  <div class="ui-g-4">
+    主旨：
+  </div>
+  <div class="ui-g-8">
+    <input type="text" pInputText>
+  </div>
+  <div class="ui-g-4">
+    內容：
+  </div>
+  <div class="ui-g-8">
+      <textarea [rows]="5" pInputTextarea autoResize="autoResize"></textarea>
   </div>
 </div>

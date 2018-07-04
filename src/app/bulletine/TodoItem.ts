@@ -1,11 +1,10 @@
 export class TodoItem {
     id: number;
-    top: boolean;
+    isTop: boolean;
     type: string;
     name: string;
     date: Date;
-    relatedUrl: string;
     notify: boolean;
-    description: string;
-    url: string[];
+    description?: string;
+    url?: string[];
 }

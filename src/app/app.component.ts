@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TodoItem } from './bulletine/TodoItem';
-import { Options } from 'selenium-webdriver/edge';
 import { RequestOptions } from '@angular/http';
 
 
@@ -14,18 +13,22 @@ export class AppComponent implements OnInit {
   items: any;
   TodoList: TodoItem[];
   TodoItem: TodoItem;
-  geturl: string = 'http://localhost:52665/api/bulletine';
+  apiUrl: string= 'https://eshclouds-api-center-developer.azurewebsites.net/api/Bulletine';
 
-  deleteTodoItem($event) {
-    this.TodoItem = $event;
-    console.log($event.id);
-    this.http.delete(this.geturl + '/' + $event.id)
+  ngOnInit() {
+    this.getAllTodo();
+  }
+  constructor(private  http: HttpClient) {}
+
+  deleteTodoItem(event) {
+    this.TodoItem = event;
+    this.http.delete(this.apiUrl + '/' + event.id)
     .subscribe(res => {
       this.getAllTodo();
     });
   }
   updateTodoItem($event) {
-    this.http.put(this.geturl, $event, {responseType: 'text'})
+    this.http.put(this.apiUrl, $event, {responseType: 'text'})
     .subscribe(res => {
       this.getAllTodo();
     });
@@ -34,36 +37,36 @@ export class AppComponent implements OnInit {
     // should call api
     this.items.push($event);
     console.log(this.items);
-    this.http.post(this.geturl, $event, {responseType: 'text'})
+    this.http.post(this.apiUrl, $event, {responseType: 'text'})
       .subscribe(res => {
         this.getAllTodo();
       });
   }
   getAllTodo() {
-      this.http.get<TodoItem[]>(this.geturl)
+      this.http.get<TodoItem[]>(this.apiUrl)
       .subscribe(
         response => {
           this.TodoList = response;
+          this.TodoList.push(
+            {
+              id: 1,
+              isTop: true,
+              type: '審核',
+              name: '阿尼',
+              date: new Date(2017, 12, 23),
+              notify: true
+            },
+            {
+              id: 2,
+              isTop: false,
+              type: '審核',
+              name: '哆啦A夢',
+              date: new Date(2018, 11, 11),
+              notify: true
+            }
+          );
+          console.log(this.TodoList);
         }
       );
   }
-
-  ngOnInit() {
-    this.getAllTodo();
-    this.items = [
-      {
-        top: true,
-        type: 1,
-        Name: 'hello',
-        date: 1223
-      },
-      {
-        top: false,
-        type: 2,
-        Name: 'hello',
-        date: 1223
-      }
-    ];
-  }
-  constructor(private  http: HttpClient) {}
 }

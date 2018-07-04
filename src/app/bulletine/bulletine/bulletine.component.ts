@@ -14,7 +14,6 @@ interface Date {
   styleUrls: ['./bulletine.component.scss']
 })
 export class BulletineComponent implements OnInit {
-  columns: string[];
   selectedperYear: Date = { month: '', date: '' };
   selectedperMonth: number;
   selectedperWeekday: number;
@@ -24,12 +23,22 @@ export class BulletineComponent implements OnInit {
   months: SelectItem[] = [{ label: '請選擇', value: null }];
   Weekdays: SelectItem[] = [{ label: '請選擇', value: null }];
   Dates: SelectItem[] = [{ label: '請選擇', value: null }];
-
-
+  // 表頭名稱
+  columns = [
+    '置頂',
+    '類型',
+    '名稱',
+    '建立時間',
+    '操作'
+  ];
+  // 新增待辦事項
   showTodoModal = false;
+  // 編輯事項
   showEditModal = false;
+  // 提醒
   showNotifyModal = false;
-  setExpand = false;
+  // 是否信件通知，預設為否
+  showMailForm= false;
   notifyGroupSelectedValue: boolean;
   @Input() items: any;
   @Input() TodoList: TodoItem[];
@@ -45,12 +54,12 @@ export class BulletineComponent implements OnInit {
   showEdit(model) {
     this.selectedTodoItem = model;
     this.showEditModal = true;
+    console.log(this.selectedTodoItem);
   }
 
   showNotification(model) {
     this.selectedTodoItem = model;
     this.notifyGroupSelectedValue = model.notify.toString();
-    console.log(model.top);
     this.showNotifyModal = true;
   }
 
@@ -60,17 +69,21 @@ export class BulletineComponent implements OnInit {
     this.addTodo.emit(this.newtodoitem);
     this.showTodoModal = false;
   }
-  saveNotify() {
-    if (
-      !moment(
-        '2020-' + this.selectedperYear.month + '-' + this.selectedperYear.date
-      ).isValid()
-    ) {
-      const error = 'Please Enter a valid date';
-      return;
-    }
+  saveNotifyModal() {
+    console.log('save notify modal');
+    // 先註解
+    // if (
+    //   !moment(
+    //     '2020-' + this.selectedperYear.month + '-' + this.selectedperYear.date
+    //   ).isValid()
+    // ) {
+    //   console.log('???');
+    //   const error = 'Please Enter a valid date';
+    //   return;
+    // }
     // TODO: should have parameters ouptut
     this.savingNotify.emit();
+    this.showNotifyModal = false;
   }
   update(model) {
     this.selectedTodoItem = model;
@@ -97,21 +110,20 @@ export class BulletineComponent implements OnInit {
       this.Dates.push({ label: i.toString(), value: val });
     }
 
-    this.columns = [
-      'Top',
-      'Type',
-      'Name',
-      'Date',
-      'Edit'
-    ];
+    // this.columns = [
+    //   'Top',
+    //   'Type',
+    //   'Name',
+    //   'Date',
+    //   'Edit'
+    // ];
 
     this.newtodoitem = {
       id: 0,
-      top: false,
+      isTop: false,
       type: '',
       name: '',
       date: new Date(),
-      relatedUrl: '',
       description: '',
       notify: false,
       url: []

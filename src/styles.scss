@@ -1,18 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
-label{
-    cursor: pointer;
+label {
+  cursor: pointer;
 }
 // 暫定
-.ui-dialog{
-    width: 450px;
+.ui-dialog {
+  width: 450px;
+  input {
+    width: 100%;
+  }
+  textarea {
+    width: 100%;
+    resize: none;
+    overflow: auto;
+  }
 }
-.edit-dialog{
-    input{
-        width: 100%;
-    }
-    textarea{
-        width: 100%;
-        resize: none;
-        overflow: auto;
-    }
+.bulletin-table {
+  .fa-pencil,
+  .fa-bell,
+  .fa-bell-o {
+    cursor: pointer;
+  }
+}
+.mail-form{
+    border: 1px solid gray;
 }
