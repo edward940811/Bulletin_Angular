@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
@@ -11,7 +10,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule } from 'primeng/table';
 import { BulletineComponent } from './bulletine/bulletine.component';
 import { MailFormComponent } from './mail-form/mail-form.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -24,7 +23,8 @@ import { MailFormComponent } from './mail-form/mail-form.component';
     FormsModule,
     RadioButtonModule,
     CalendarModule,
-    FileUploadModule
+    FileUploadModule,
+    ReactiveFormsModule
   ],
   declarations: [BulletineComponent, MailFormComponent ],
   exports: [ BulletineComponent ]

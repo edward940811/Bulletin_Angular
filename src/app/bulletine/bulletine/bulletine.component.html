@@ -8,7 +8,7 @@
             <p-button label="新增" (onClick)="showTodo()"></p-button>
         </div>
     </h3>
-    <p-table [value]="TodoList"  styleClass="bulletin-table">
+    <p-table [value]="TodoList" styleClass="bulletin-table">
         <ng-template pTemplate="header">
             <tr>
                 <th *ngFor="let col of columns">
@@ -26,7 +26,7 @@
                 <td>{{TodoItem.date | date:'yyyy-MM-dd' }}</td>
                 <td>
                     <i class="fa fa-pencil" aria-hidden="true" (click)="showEdit(TodoItem)"></i>
-                    <i class="fa fa-bell" aria-hidden="true" [ngClass]="{ 'fa-bell' : TodoItem.notify,'fa-bell-o':!TodoItem.notify }" (click)="showNotification(TodoItem)" ></i>
+                    <i class="fa fa-bell" aria-hidden="true" [ngClass]="{ 'fa-bell' : TodoItem.notify,'fa-bell-o':!TodoItem.notify }" (click)="showNotification(TodoItem)"></i>
                     <button type="text" (click)="delete(TodoItem)" pButton label="待討論刪除鈕"></button>
                 </td>
             </tr>
@@ -35,80 +35,83 @@
 </p-panel>
 
 <!-- 新增待辦事項 -->
-<p-dialog header="新增待辦事項" [(visible)]="showTodoModal" modal="true" [dismissableMask]="true">
-    <div class="ui-g">
-        <div class="ui-g-4">
-            置頂：
+<form [formGroup]="editForm">
+    <p-dialog header="新增待辦事項" [(visible)]="showTodoModal" modal="true" [dismissableMask]="true">
+        <div class="ui-g">
+            <div class="ui-g-4">
+                置頂：
+            </div>
+            <div class="ui-g-8">
+                <p-checkbox formControlName='isTop' binary="true"></p-checkbox>
+            </div>
+            <div class="ui-g-4">
+                類型：
+            </div>
+            <div class="ui-g-8">
+                <input type="text" class="form-control" formControlName='type'>
+            </div>
+            <div class="ui-g-4">
+                名稱：
+            </div>
+            <div class="ui-g-8">
+                <input type="text" class="form-control" formControlName='name'>
+            </div>
+            <div class="ui-g-4">
+                描述：
+            </div>
+            <div class="ui-g-8">
+                <input type="text" class="form-control" formControlName='description'>
+            </div>
+            <div class="ui-g-4">
+                相關網址：
+            </div>
+            <div class="ui-g-8">
+                <input type="text" class="form-control" formControlName='url'>
+            </div>
+            <div class="ui-g-12">
+                <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
+                    auto="true" chooseLabel="Browse"></p-fileUpload>
+            </div>
+            <p-button label="儲存" icon="fa fa-floppy-o" (click)="addTodoItem()" iconPos="left" [disabled]="editForm.invalid"></p-button>
         </div>
-        <div class="ui-g-8">
-            <p-checkbox [(ngModel)]="newtodoitem.top" binary="true"></p-checkbox>
-        </div>
-        <div class="ui-g-4">
-            類型：
-        </div>
-        <div class="ui-g-8">
-            <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.type" name="name">
-        </div>
-        <div class="ui-g-4">
-            名稱：
-        </div>
-        <div class="ui-g-8">
-            <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.name" name="name">
-        </div>
-        <div class="ui-g-4">
-            描述：
-        </div>
-        <div class="ui-g-8">
-            <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.description" name="name">
-        </div>
-        <div class="ui-g-4">
-            相關網址：
-        </div>
-        <div class="ui-g-8">
-            <input type="text" class="form-control" id="name" [(ngModel)]="newtodoitem.relatedUrl" name="name">
-        </div>
-        <div class="ui-g-12">
-            <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
-                auto="true" chooseLabel="Browse"></p-fileUpload>
-        </div>
-        <p-button label="儲存" icon="fa fa-floppy-o" (click)="addTodoItem()" iconPos="left"></p-button>
-    </div>
-</p-dialog>
-
+    </p-dialog>
+</form>
 <!-- 編輯事項 -->
-<p-dialog header="編輯事項" [(visible)]="showEditModal" modal="true" [dismissableMask]="true" styleClass="edit-dialog">
-    <h2>123{{edittodoitem.name}}</h2>
-    <div class="ui-g">
-        <div class="ui-g-4">
-            類型：
+<form [formGroup]='editForm'>
+    <p-dialog header="編輯事項" [(visible)]="showEditModal" modal="true" [dismissableMask]="true" styleClass="edit-dialog">
+        <h2>標題還沒綁定</h2>
+        <div class="ui-g">
+            <div class="ui-g-4">
+                類型：
+            </div>
+            <div class="ui-g-8">
+                <input type="text" pInputText formControlName='type'>
+            </div>
+            <div class="ui-g-4">
+                描述：
+            </div>
+            <div class="ui-g-8">
+                <textarea [rows]="5" pInputTextarea autoResize="autoResize" formControlName='description'></textarea>
+            </div>
+            <div class="ui-g-4">
+                相關網址：
+            </div>
+            <div class="ui-g-8">
+                <input type="text" pInputText formControlName='url'>
+            </div>
+            <div>
+                <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
+                    auto="true" chooseLabel="Browse"></p-fileUpload>
+            </div>
         </div>
-        <div class="ui-g-8">
-            <input type="text" pInputText [(ngModel)]="edittodoitem.type" [value]="selectedTodoItem.type">
-        </div>
-        <div class="ui-g-4">
-            描述：
-        </div>
-        <div class="ui-g-8">
-            <textarea [rows]="5" pInputTextarea autoResize="autoResize" [(ngModel)]="edittodoitem.description" [value]="selectedTodoItem.description"></textarea>
-        </div>
-        <div class="ui-g-4">
-            相關網址：
-        </div>
-        <div class="ui-g-8">
-            <input type="text" pInputText placeholder="testin">
-        </div>
-        <div>
-            <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)"
-                auto="true" chooseLabel="Browse"></p-fileUpload>
-        </div>
-    </div>
-    <!-- (click)="update(selectedTodoItem)" -->
-    <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="update(selectedTodoItem)"></p-button>
-</p-dialog>
-
+        <!-- (click)="update(selectedTodoItem)" -->
+        <p-button [disabled]="editForm.invalid" label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="update(selectedTodoItem)"></p-button>
+    </p-dialog>
+</form>
 <!-- 設定提醒 -->
+<!-- <form> -->
 <p-dialog header="設定提醒" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true" styleClass="notify-dialog">
-    <h2>{{notifyTitle}}</h2>
+    <h2>標題還沒綁定</h2>
     <div class="ui-g">
         <div class="ui-g-4">
             提醒啟用：
@@ -126,7 +129,6 @@
         </div>
         <div class="ui-g-12">
             <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar>
-            <span>{{date3|date}}</span>
         </div>
     </div>
     <div class="ui-g">
@@ -157,3 +159,4 @@
     </div>
     <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="saveNotifyModal()"></p-button>
 </p-dialog>
+<!-- </form> -->
