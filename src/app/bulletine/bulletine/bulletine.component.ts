@@ -41,7 +41,6 @@ export class BulletineComponent implements OnInit {
   // temp
   temp: any;
   // temp end
-  @Input() items: any;
   @Input() TodoList: TodoItem[];
   @Output() addTodo = new EventEmitter();
   @Output() savingNotify = new EventEmitter();
@@ -63,8 +62,8 @@ export class BulletineComponent implements OnInit {
     // 這個名字不好要修改，總而言之就是todolist的項目，需要好好想個名字
     // 待辦事項表格
     this.editForm = this.formBuilder.group({
-      id: [0],
-      isTop: [false],
+      id: [],
+      isTop: ['false'],
       type: ['', [Validators.required]],
       name: ['', [Validators.required]],
       date: [new Date()],
@@ -126,8 +125,13 @@ export class BulletineComponent implements OnInit {
   addTodoItem() {
     const today = new Date();
     this.editForm.patchValue({
-      date: today
+      isTop: this.editForm.value.isTop === null ? false : true,
+      date: today,
+      id: 0,
+      notify: false
     });
+
+    console.log(this.editForm.value);
     this.addTodo.emit(this.editForm.value);
     this.showTodoModal = false;
   }
