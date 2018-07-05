@@ -24,3 +24,15 @@ label {
 .mail-form{
     border: 1px solid gray;
 }
+.ui-g{
+  .level2{
+    padding-left: 32px;
+  }
+}
+.require{
+  position: relative;
+  left: -12px;
+  span{
+    color: red
+  }
+}

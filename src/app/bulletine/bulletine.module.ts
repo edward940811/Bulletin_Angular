@@ -9,7 +9,7 @@ import { PanelModule } from 'primeng/panel';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { TableModule } from 'primeng/table';
 import { BulletineComponent } from './bulletine/bulletine.component';
-import { MailFormComponent } from './mail-form/mail-form.component';
+// import { MailFormComponent } from './mail-form/mail-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -26,7 +26,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FileUploadModule,
     ReactiveFormsModule
   ],
-  declarations: [BulletineComponent, MailFormComponent ],
+  // declarations: [BulletineComponent, MailFormComponent ],
+  declarations: [BulletineComponent],
   exports: [ BulletineComponent ]
 })
 export class BulletineModule { }
