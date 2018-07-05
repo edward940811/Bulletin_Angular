@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   TodoList: TodoItem[];
   TodoItem: TodoItem;
   apiUrl: string= 'https://eshclouds-api-center-developer.azurewebsites.net/api/Bulletine';
+  localApiUrl: string = 'http://localhost:52665/api/bulletine';
 
   ngOnInit() {
     this.getAllTodo();
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit {
       });
   }
   getAllTodo() {
-      this.http.get<TodoItem[]>(this.apiUrl)
+      this.http.get<TodoItem[]>(this.localApiUrl)
       .subscribe(
         response => {
           this.TodoList = response;
