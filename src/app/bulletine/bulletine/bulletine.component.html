@@ -41,7 +41,7 @@
                 置頂：
             </div>
             <div class="ui-g-8">
-                <p-checkbox formControlName='isTop' binary="true"></p-checkbox>
+                <p-checkbox [formControl]="editForm.controls['isTop']" binary="true"></p-checkbox>
             </div>
             <div class="ui-g-4 require">
                 <span>*</span>
