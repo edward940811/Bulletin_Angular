@@ -24,13 +24,13 @@ export class AppComponent implements OnInit {
   deleteTodoItem(event) {
     console.log(event);
     this.TodoItem = event;
-    this.http.delete(this.apiUrl + '/' + event.id)
+    this.http.delete(this.localApiUrl + '/' + event.id)
     .subscribe(res => {
       this.getAllTodo();
     });
   }
   updateTodoItem(event) {
-    this.http.put(this.apiUrl, event, {responseType: 'text'})
+    this.http.put(this.localApiUrl, event, {responseType: 'text'})
     .subscribe(res => {
       this.getAllTodo();
     });
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     // should call api
     console.log(event);
     this.items = event;
-    this.http.post(this.apiUrl, event, {responseType: 'text'})
+    this.http.post(this.localApiUrl, event, {responseType: 'text'})
       .subscribe(res => {
         this.getAllTodo();
       });
@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
           this.TodoList.push(
             {
               id: 1,
-              isTop: true,
+              top: true,
               type: '審核',
               name: '阿尼',
               date: new Date(2017, 12, 23),
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
             },
             {
               id: 2,
-              isTop: false,
+              top: false,
               type: '審核',
               name: '哆啦A夢',
               date: new Date(2018, 11, 11),

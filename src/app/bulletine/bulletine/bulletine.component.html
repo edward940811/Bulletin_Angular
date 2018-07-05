@@ -19,7 +19,7 @@
         <ng-template pTemplate="body" let-TodoItem>
             <tr>
                 <td>
-                    <i class="fa" aria-hidden="true" [ngClass]="{ 'fa-star' : TodoItem.isTop,'fa-star-o':!TodoItem.isTop }"></i>
+                    <i class="fa" aria-hidden="true" [ngClass]="{ 'fa-star' : TodoItem.top,'fa-star-o':!TodoItem.top }"></i>
                 </td>
                 <td>{{TodoItem.type}}</td>
                 <td>{{TodoItem.name}}</td>

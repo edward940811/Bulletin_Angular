@@ -1,6 +1,6 @@
 export class TodoItem {
     id: number;
-    isTop: boolean;
+    top: boolean;
     type: string;
     name: string;
     date: Date;
