@@ -19,7 +19,7 @@
         <ng-template pTemplate="body" let-TodoItem>
             <tr>
                 <td>
-                    <i class="fa" aria-hidden="true" [ngClass]="{ 'fa-star' : TodoItem.top,'fa-star-o':!TodoItem.top }"></i>
+                    <i class="fa" aria-hidden="true" [ngClass]="{ 'fa-star' : TodoItem.setTop,'fa-star-o':!TodoItem.setTop }"></i>
                 </td>
                 <td>{{TodoItem.type}}</td>
                 <td>{{TodoItem.name}}</td>
@@ -41,7 +41,7 @@
                 置頂：
             </div>
             <div class="ui-g-8">
-                <p-checkbox [formControl]="editForm.controls['isTop']" binary="true"></p-checkbox>
+                <p-checkbox [formControl]="editForm.controls['setTop']" binary="true"></p-checkbox>
             </div>
             <div class="ui-g-4 require">
                 <span>*</span>
@@ -111,7 +111,7 @@
     </p-dialog>
 </form>
 <!-- 設定提醒 -->
-<form [formGroup]='notifyForm'>
+<form [formGroup]='editForm'>
     <p-dialog header="設定提醒" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true" styleClass="notify-dialog">
         <h2>{{temp.name}}</h2>
         <div class="ui-g">

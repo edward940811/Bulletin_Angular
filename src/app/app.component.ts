@@ -29,6 +29,12 @@ export class AppComponent implements OnInit {
       this.getAllTodo();
     });
   }
+  saveNotify(event) {
+    this.http.put(this.localApiUrl, event, {responseType: 'text'})
+    .subscribe(res => {
+      this.getAllTodo();
+    });
+  }
   updateTodoItem(event) {
     this.http.put(this.localApiUrl, event, {responseType: 'text'})
     .subscribe(res => {
@@ -53,7 +59,7 @@ export class AppComponent implements OnInit {
           this.TodoList.push(
             {
               id: 1,
-              top: true,
+              setTop: true,
               type: '審核',
               name: '阿尼',
               date: new Date(2017, 12, 23),
@@ -61,7 +67,7 @@ export class AppComponent implements OnInit {
             },
             {
               id: 2,
-              top: false,
+              setTop: false,
               type: '審核',
               name: '哆啦A夢',
               date: new Date(2018, 11, 11),

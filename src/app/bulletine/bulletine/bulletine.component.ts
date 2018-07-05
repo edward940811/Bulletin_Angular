@@ -43,7 +43,7 @@ export class BulletineComponent implements OnInit {
   // temp end
   @Input() TodoList: TodoItem[];
   @Output() addTodo = new EventEmitter();
-  @Output() savingNotify = new EventEmitter();
+  @Output() saveNotify = new EventEmitter();
   @Output() updatedTodoItem = new EventEmitter();
   @Output() deleteTodoItem = new EventEmitter();
   constructor(
@@ -63,16 +63,13 @@ export class BulletineComponent implements OnInit {
     // 待辦事項表格
     this.editForm = this.formBuilder.group({
       id: [],
-      isTop: ['false'],
+      setTop: ['false'],
       type: ['', [Validators.required]],
       name: ['', [Validators.required]],
       date: [new Date()],
       description: [''],
       notify: [false],
-      url: [[]]
-    });
-    // 提醒表格
-    this.notifyForm = this.formBuilder.group({
+      url: [[]],
       enableNotify: ['false'],
       enableMailNotify: ['false'],
       notifyType: [{value: '', disabled: true}],
@@ -111,32 +108,29 @@ export class BulletineComponent implements OnInit {
     this.editForm.reset(model);
     this.showEditModal = true;
     this.temp = model;
-    console.log('show edit', this.temp);
 
   }
 
   showNotification(model) {
-    this.selectedTodoItem = model;
-    this.notifyGroupSelectedValue = model.notify.toString();
+    this.editForm.reset(model);
     this.showNotifyModal = true;
+    console.log('showNotification:');
+    console.log(this.editForm.value);
   }
 
   // TodoList Post Request
   addTodoItem() {
     const today = new Date();
     this.editForm.patchValue({
-      isTop: this.editForm.value.isTop === null ? false : true,
+      top: this.editForm.value.top === null ? false : true,
       date: today,
       id: 0,
       notify: false
     });
-
-    console.log(this.editForm.value);
     this.addTodo.emit(this.editForm.value);
     this.showTodoModal = false;
   }
   saveNotifyModal() {
-    console.log('save notify modal');
     // 先註解
     // if (
     //   !moment(
@@ -148,7 +142,14 @@ export class BulletineComponent implements OnInit {
     //   return;
     // }
     // TODO: should have parameters ouptut
-    this.savingNotify.emit();
+    console.log(this.editForm.value);
+    this.editForm.patchValue({
+      top: this.editForm.value.top === null ? false : true,
+      date: this.editForm.value.date,
+      id: this.editForm.value.id,
+      notify: this.editForm.value.notify
+    });
+    this.saveNotify.emit(this.editForm.value);
     this.showNotifyModal = false;
   }
   update() {
@@ -182,12 +183,17 @@ export class BulletineComponent implements OnInit {
   }
   controlNotifyEnableStatus(status) {
     if (status) {
-      this.notifyForm.reset();
-      this.notifyForm.controls['notifyType'].enable();
+      this.editForm.controls['notifyType'].enable();
+      this.editForm.patchValue({
+        notify: true
+      });
     }else {
       // this.notifyForm.controls['notifyType'].disable();
       // this.controlCircleStatus('default');
-      this.notifyForm.reset();
+      this.editForm.controls['notifyType'].enable();
+      this.editForm.patchValue({
+        notify: false
+      });
     }
   }
   contorlNotifyTypeStatus(status) {
