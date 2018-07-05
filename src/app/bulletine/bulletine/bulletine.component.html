@@ -27,7 +27,6 @@
                 <td>
                     <i class="fa fa-pencil" aria-hidden="true" (click)="showEdit(TodoItem)"></i>
                     <i class="fa fa-bell" aria-hidden="true" [ngClass]="{ 'fa-bell' : TodoItem.notify,'fa-bell-o':!TodoItem.notify }" (click)="showNotification(TodoItem)"></i>
-                    <button type="text" (click)="delete(TodoItem)" pButton label="待討論刪除鈕"></button>
                 </td>
             </tr>
         </ng-template>
@@ -44,13 +43,15 @@
             <div class="ui-g-8">
                 <p-checkbox formControlName='isTop' binary="true"></p-checkbox>
             </div>
-            <div class="ui-g-4">
-                類型：
+            <div class="ui-g-4 require">
+                <span>*</span>
+                類型 ：
             </div>
             <div class="ui-g-8">
                 <input type="text" class="form-control" formControlName='type'>
             </div>
-            <div class="ui-g-4">
+            <div class="ui-g-4 require">
+                <span>*</span>
                 名稱：
             </div>
             <div class="ui-g-8">
@@ -60,7 +61,7 @@
                 描述：
             </div>
             <div class="ui-g-8">
-                <input type="text" class="form-control" formControlName='description'>
+                <textarea [rows]="5" pInputTextarea autoResize="autoResize" formControlName='description'></textarea>
             </div>
             <div class="ui-g-4">
                 相關網址：
@@ -79,9 +80,10 @@
 <!-- 編輯事項 -->
 <form [formGroup]='editForm'>
     <p-dialog header="編輯事項" [(visible)]="showEditModal" modal="true" [dismissableMask]="true" styleClass="edit-dialog">
-        <h2>標題還沒綁定</h2>
+        <h2>{{temp.name}}</h2>
         <div class="ui-g">
-            <div class="ui-g-4">
+            <div class="ui-g-4 require">
+                <span>*</span>
                 類型：
             </div>
             <div class="ui-g-8">
@@ -104,59 +106,89 @@
                     auto="true" chooseLabel="Browse"></p-fileUpload>
             </div>
         </div>
-        <!-- (click)="update(selectedTodoItem)" -->
-        <p-button [disabled]="editForm.invalid" label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="update(selectedTodoItem)"></p-button>
+        <p-button [disabled]="editForm.invalid" label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="update()"></p-button>
+        <p-button label="刪除" icon="fa fa-trash-o" (click)="delete()" iconPos="left" styleClass="ui-button-danger"></p-button>
     </p-dialog>
 </form>
 <!-- 設定提醒 -->
-<!-- <form> -->
-<p-dialog header="設定提醒" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true" styleClass="notify-dialog">
-    <h2>標題還沒綁定</h2>
-    <div class="ui-g">
-        <div class="ui-g-4">
-            提醒啟用：
+<form [formGroup]='notifyForm'>
+    <p-dialog header="設定提醒" [(visible)]="showNotifyModal" modal="true" [dismissableMask]="true" styleClass="notify-dialog">
+        <h2>{{temp.name}}</h2>
+        <div class="ui-g">
+            <div class="ui-g-4">
+                提醒啟用：
+            </div>
+            <div class="ui-g-4">
+                <p-radioButton name="notifygroup" value="true" formControlName='enableNotify' label="開啟" (onClick)='controlNotifyEnableStatus(true)'></p-radioButton>
+            </div>
+            <div class="ui-g-4">
+                <p-radioButton name="notifygroup" value="false" formControlName='enableNotify' label="關閉" (onClick)='controlNotifyEnableStatus(false)'></p-radioButton>
+            </div>
         </div>
-        <div class="ui-g-4">
-            <p-radioButton name="notifygroup" value="True" [(ngModel)]="notifyGroupSelectedValue" label="開啟"></p-radioButton>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p-radioButton name="notifyType" value="true" formControlName='notifyType' label="一次性提醒" (onClick)='contorlNotifyTypeStatus(true)'></p-radioButton>
+            </div>
+            <div class="ui-g-12 level2">
+                <p-calendar [showIcon]="true" formControlName='oneTimeDate' dateFormat="yy-mm-dd"></p-calendar>
+            </div>
         </div>
-        <div class="ui-g-4">
-            <p-radioButton name="notifygroup" value="False" [(ngModel)]="notifyGroupSelectedValue" label="關閉"></p-radioButton>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <p-radioButton name="notifyType" value="false" formControlName='notifyType' label="循環提醒" (onClick)='contorlNotifyTypeStatus(false)'></p-radioButton>
+            </div>
+            <div class="ui-g-12 level2">
+                <p-radioButton name="circleType" value="year" formControlName='circleType' label="每年" (onClick)='controlCircleStatus("year")'></p-radioButton>
+                <p-dropdown [autoWidth]="false" [options]="Months" formControlName='yearMonth'></p-dropdown>月
+                <p-dropdown [autoWidth]="false" [options]="Dates" formControlName='yearDate'></p-dropdown>日
+            </div>
+            <div class="ui-g-12 level2">
+                <p-radioButton name="circleType" value="month" formControlName='circleType' label="每月" (onClick)='controlCircleStatus("month")'></p-radioButton>
+                <p-dropdown [autoWidth]="false" [options]="Months" formControlName='monthDate'></p-dropdown>日
+            </div>
+            <div class="ui-g-12 level2">
+                <p-radioButton name="circleType" value="week" formControlName='circleType' label="每逢 星期" (onClick)='controlCircleStatus("weekday")'></p-radioButton>
+                <p-dropdown [autoWidth]="false" [options]="Weekdays" formControlName='weekday'></p-dropdown>
+            </div>
         </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <p-radioButton name="yearAnnounce" value="on" [(ngModel)]="selectedValue" label="一次性提醒"></p-radioButton>
+        <div class="ui-g ">
+            <div class="ui-g-4">
+                信件通知：
+            </div>
+            <div class="ui-g-4">
+                <p-radioButton name="mailForm" value="true" label="開啟" (click)="showMailForm=true" formControlName='enableMailNotify'></p-radioButton>
+                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+            </div>
+            <div class="ui-g-4">
+                <p-radioButton name="mailForm" value="false" label="關閉" (click)="showMailForm=false" formControlName='enableMailNotify'></p-radioButton>
+                <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+            </div>
+            <div *ngIf="showMailForm">
+                <div class="ui-g mail-form">
+                    <div class="ui-g-4">
+                        收件人：
+                    </div>
+                    <div class="ui-g-8">
+                        <input type="text" pInputText formControlName='receiver'>
+                        <span>
+                            多個收件者可以 ',' 區隔
+                        </span>
+                    </div>
+                    <div class="ui-g-4">
+                        主旨：
+                    </div>
+                    <div class="ui-g-8">
+                        <input type="text" pInputText formControlName='subject'>
+                    </div>
+                    <div class="ui-g-4">
+                        內容：
+                    </div>
+                    <div class="ui-g-8">
+                        <textarea [rows]="5" pInputTextarea autoResize="autoResize" formControlName='content'></textarea>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="ui-g-12">
-            <p-calendar [(ngModel)]="date3" [showIcon]="true"></p-calendar>
-        </div>
-    </div>
-    <div class="ui-g">
-        <div class="ui-g-12">
-            <p-radioButton name="yearAnnnounce" value="off" [(ngModel)]="selectedValue" label="循環提醒"></p-radioButton>
-        </div>
-        <div class="ui-g-12">
-            <p-checkbox name="recursive" value="val1" label="每年" [(ngModel)]="selectedValues"></p-checkbox>
-            <p-dropdown [autoWidth]="false" [options]="Months" label="月" [(ngModel)]="selectedperYear.month"></p-dropdown>
-            <p-dropdown [autoWidth]="false" [options]="Dates" label="日" [(ngModel)]="selectedperYear.date"></p-dropdown>
-        </div>
-        <div class="ui-g-12">
-            <p-checkbox name="recursive" value="val2" label="每月" [(ngModel)]="selectedValues"></p-checkbox>
-            <p-dropdown [autoWidth]="false" [options]="Months" [(ngModel)]="selectedperMonth"></p-dropdown>日
-        </div>
-        <div class="ui-g-12">
-            <p-checkbox name="recursive" value="val3" [(ngModel)]="selectedValues" label="每逢 星期"></p-checkbox>
-            <p-dropdown [autoWidth]="false" [options]="Weekdays" [(ngModel)]="selectedperWeekday"></p-dropdown>
-        </div>
-    </div>
-    <div class="ui-g ">
-        <div class="ui-g-12">
-            <p-checkbox [(ngModel)]="showMailForm" binary="true" label="信件通知"></p-checkbox>
-        </div>
-        <div *ngIf="showMailForm">
-            <app-mail-form></app-mail-form>
-        </div>
-    </div>
-    <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="saveNotifyModal()"></p-button>
-</p-dialog>
-<!-- </form> -->
+        <p-button label="儲存" icon="fa fa-floppy-o" iconPos="left" (click)="saveNotifyModal()"></p-button>
+    </p-dialog>
+</form>

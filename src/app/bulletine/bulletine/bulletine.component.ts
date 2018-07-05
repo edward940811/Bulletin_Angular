@@ -19,13 +19,14 @@ export class BulletineComponent implements OnInit {
   selectedperWeekday: number;
   selectedTodoItem: TodoItem = new TodoItem();
   // 改為reactive form之後就用不到，要把它抽掉
-  newtodoitem: TodoItem;
   edittodoitem: TodoItem = new TodoItem();
   //
-  months: SelectItem[] = [{ label: '請選擇', value: null }];
+  Months: SelectItem[] = [{ label: '請選擇', value: null }];
   Weekdays: SelectItem[] = [{ label: '請選擇', value: null }];
   Dates: SelectItem[] = [{ label: '請選擇', value: null }];
+  // form
   editForm: FormGroup;
+  notifyForm: FormGroup;
   // 表頭名稱
   columns = ['置頂', '類型', '名稱', '建立時間', '操作'];
   // 新增待辦事項
@@ -37,6 +38,9 @@ export class BulletineComponent implements OnInit {
   // 是否信件通知，預設為否
   showMailForm = false;
   notifyGroupSelectedValue: boolean;
+  // temp
+  temp: any;
+  // temp end
   @Input() items: any;
   @Input() TodoList: TodoItem[];
   @Output() addTodo = new EventEmitter();
@@ -47,6 +51,9 @@ export class BulletineComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
   ngOnInit() {
+    this.temp = {
+      name: ''
+    };
     // 初始化表格
     this.initForm();
     this.processTime();
@@ -54,6 +61,7 @@ export class BulletineComponent implements OnInit {
   // 初始化表格
   initForm() {
     // 這個名字不好要修改，總而言之就是todolist的項目，需要好好想個名字
+    // 待辦事項表格
     this.editForm = this.formBuilder.group({
       id: [0],
       isTop: [false],
@@ -64,15 +72,31 @@ export class BulletineComponent implements OnInit {
       notify: [false],
       url: [[]]
     });
+    // 提醒表格
+    this.notifyForm = this.formBuilder.group({
+      enableNotify: ['false'],
+      enableMailNotify: ['false'],
+      notifyType: [{value: '', disabled: true}],
+      oneTimeDate: [{value: new Date(), disabled: true}],
+      circleType: [{value: '', disabled: true}],
+      yearMonth: [{value: null, disabled: true}],
+      yearDate: [{value: null, disabled: true}],
+      monthDate: [{value: null, disabled: true}],
+      weekday: [{value: null, disabled: true}],
+      receiver: [''],
+      subject: [''],
+      content: ['']
+    });
   }
   // 初始化、處理時間
   processTime() {
     for (let i = 1; i <= 7; i++) {
-      this.Weekdays.push({ label: i.toString(), value: i });
+
+      this.Weekdays.push({ label: this.transformNumberToCharacter(i), value: i });
     }
     for (let i = 1; i <= 12; i++) {
       const val = i < 10 ? '0' + i.toString() : i.toString();
-      this.months.push({ label: i.toString(), value: val });
+      this.Months.push({ label: i.toString(), value: val });
     }
     for (let i = 1; i <= 31; i++) {
       const val = i < 10 ? '0' + i.toString() : i.toString();
@@ -87,6 +111,9 @@ export class BulletineComponent implements OnInit {
   showEdit(model) {
     this.editForm.reset(model);
     this.showEditModal = true;
+    this.temp = model;
+    console.log('show edit', this.temp);
+
   }
 
   showNotification(model) {
@@ -120,15 +147,75 @@ export class BulletineComponent implements OnInit {
     this.savingNotify.emit();
     this.showNotifyModal = false;
   }
-  update(model) {
-    this.selectedTodoItem = model;
-    this.selectedTodoItem.description = this.edittodoitem.description;
-    this.selectedTodoItem.type = this.edittodoitem.type;
-    this.updatedTodoItem.emit(this.selectedTodoItem);
-    this.showEditModal = false;
+  update() {
+    console.log('prepare to update');
+    console.log('do something');
   }
-  delete(model) {
-    this.selectedTodoItem = model;
-    this.deleteTodoItem.emit(this.selectedTodoItem);
+  delete() {
+   console.log(this.temp);
+    // this.temp
+    // this.selectedTodoItem = model;
+    this.deleteTodoItem.emit(this.temp);
+  }
+  // 將數字轉為國字
+  transformNumberToCharacter(number) {
+    switch (number) {
+      case 1:
+        return '一';
+      case 2:
+        return '二';
+      case 3:
+        return '三';
+      case 4:
+        return '四';
+      case 5:
+        return '五';
+      case 6:
+        return '六';
+      case 7:
+        return '日';
+    }
+  }
+  controlNotifyEnableStatus(status) {
+    if (status) {
+      this.notifyForm.reset();
+      this.notifyForm.controls['notifyType'].enable();
+    }else {
+      // this.notifyForm.controls['notifyType'].disable();
+      // this.controlCircleStatus('default');
+      this.notifyForm.reset();
+    }
+  }
+  contorlNotifyTypeStatus(status) {
+    // true:一次性提醒,false:週期性提醒
+    if (status) {
+      this.notifyForm.controls['oneTimeDate'].enable();
+      this.notifyForm.controls['circleType'].disable();
+    }else {
+      this.notifyForm.controls['oneTimeDate'].disable();
+      this.notifyForm.controls['circleType'].enable();
+    }
+  }
+  controlCircleStatus(status) {
+    switch (status) {
+      case 'year':
+      this.notifyForm.controls['yearMonth'].enable();
+      this.notifyForm.controls['yearDate'].enable();
+      this.notifyForm.controls['monthDate'].disable();
+      this.notifyForm.controls['weekday'].disable();
+      break;
+      case 'month':
+      this.notifyForm.controls['yearMonth'].disable();
+      this.notifyForm.controls['yearDate'].disable();
+      this.notifyForm.controls['monthDate'].enable();
+      this.notifyForm.controls['weekday'].disable();
+      break;
+      case 'weekday':
+      this.notifyForm.controls['yearMonth'].disable();
+      this.notifyForm.controls['yearDate'].disable();
+      this.notifyForm.controls['monthDate'].disable();
+      this.notifyForm.controls['weekday'].enable();
+      break;
+    }
   }
 }

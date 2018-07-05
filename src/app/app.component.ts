@@ -22,21 +22,22 @@ export class AppComponent implements OnInit {
   constructor(private  http: HttpClient) {}
 
   deleteTodoItem(event) {
+    console.log(event);
     this.TodoItem = event;
     this.http.delete(this.apiUrl + '/' + event.id)
     .subscribe(res => {
       this.getAllTodo();
     });
   }
-  updateTodoItem($event) {
-    this.http.put(this.apiUrl, $event, {responseType: 'text'})
+  updateTodoItem(event) {
+    this.http.put(this.apiUrl, event, {responseType: 'text'})
     .subscribe(res => {
       this.getAllTodo();
     });
   }
   addTodo(event) {
     // should call api
-    console.log(this.items);
+    console.log(event);
     this.items = event;
     this.http.post(this.apiUrl, event, {responseType: 'text'})
       .subscribe(res => {
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit {
       .subscribe(
         response => {
           this.TodoList = response;
+          console.log(this.TodoList);
           this.TodoList.push(
             {
               id: 1,
