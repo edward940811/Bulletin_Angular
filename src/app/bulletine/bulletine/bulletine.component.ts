@@ -26,7 +26,7 @@ export class BulletineComponent implements OnInit {
   Dates: SelectItem[] = [{ label: '請選擇', value: null }];
   // form
   editForm: FormGroup;
-  editForm: FormGroup;
+  // editForm: FormGroup;
   // 表頭名稱
   columns = ['置頂', '類型', '名稱', '建立時間', '操作'];
   // 新增待辦事項
