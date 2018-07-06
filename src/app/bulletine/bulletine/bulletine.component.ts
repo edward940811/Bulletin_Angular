@@ -26,7 +26,7 @@ export class BulletineComponent implements OnInit {
   Dates: SelectItem[] = [{ label: '請選擇', value: null }];
   // form
   editForm: FormGroup;
-  notifyForm: FormGroup;
+  editForm: FormGroup;
   // 表頭名稱
   columns = ['置頂', '類型', '名稱', '建立時間', '操作'];
   // 新增待辦事項
@@ -188,9 +188,11 @@ export class BulletineComponent implements OnInit {
         notify: true
       });
     }else {
-      // this.notifyForm.controls['notifyType'].disable();
+      // this.editForm.controls['notifyType'].disable();
       // this.controlCircleStatus('default');
-      this.editForm.controls['notifyType'].enable();
+      this.editForm.controls['notifyType'].disable();
+      this.editForm.controls['circleType'].disable();
+      this.controlCircleStatus('default');
       this.editForm.patchValue({
         notify: false
       });
@@ -199,33 +201,38 @@ export class BulletineComponent implements OnInit {
   contorlNotifyTypeStatus(status) {
     // true:一次性提醒,false:週期性提醒
     if (status) {
-      this.notifyForm.controls['oneTimeDate'].enable();
-      this.notifyForm.controls['circleType'].disable();
+      this.editForm.controls['oneTimeDate'].enable();
+      this.editForm.controls['circleType'].disable();
     }else {
-      this.notifyForm.controls['oneTimeDate'].disable();
-      this.notifyForm.controls['circleType'].enable();
+      this.editForm.controls['oneTimeDate'].disable();
+      this.editForm.controls['circleType'].enable();
     }
   }
   controlCircleStatus(status) {
     switch (status) {
       case 'year':
-      this.notifyForm.controls['yearMonth'].enable();
-      this.notifyForm.controls['yearDate'].enable();
-      this.notifyForm.controls['monthDate'].disable();
-      this.notifyForm.controls['weekday'].disable();
+      this.editForm.controls['yearMonth'].enable();
+      this.editForm.controls['yearDate'].enable();
+      this.editForm.controls['monthDate'].disable();
+      this.editForm.controls['weekday'].disable();
       break;
       case 'month':
-      this.notifyForm.controls['yearMonth'].disable();
-      this.notifyForm.controls['yearDate'].disable();
-      this.notifyForm.controls['monthDate'].enable();
-      this.notifyForm.controls['weekday'].disable();
+      this.editForm.controls['yearMonth'].disable();
+      this.editForm.controls['yearDate'].disable();
+      this.editForm.controls['monthDate'].enable();
+      this.editForm.controls['weekday'].disable();
       break;
       case 'weekday':
-      this.notifyForm.controls['yearMonth'].disable();
-      this.notifyForm.controls['yearDate'].disable();
-      this.notifyForm.controls['monthDate'].disable();
-      this.notifyForm.controls['weekday'].enable();
+      this.editForm.controls['yearMonth'].disable();
+      this.editForm.controls['yearDate'].disable();
+      this.editForm.controls['monthDate'].disable();
+      this.editForm.controls['weekday'].enable();
       break;
+      case 'default':
+      this.editForm.controls['yearMonth'].disable();
+      this.editForm.controls['yearDate'].disable();
+      this.editForm.controls['monthDate'].disable();
+      this.editForm.controls['weekday'].disable();
     }
   }
 }
