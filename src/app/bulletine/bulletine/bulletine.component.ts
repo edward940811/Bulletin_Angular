@@ -122,7 +122,7 @@ export class BulletineComponent implements OnInit {
   addTodoItem() {
     const today = new Date();
     this.editForm.patchValue({
-      top: this.editForm.value.top === null ? false : true,
+      setTop: this.editForm.value.top === null ? false : true,
       date: today,
       id: 0,
       notify: false
