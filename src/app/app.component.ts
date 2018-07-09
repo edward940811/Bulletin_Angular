@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   TodoList: TodoItem[];
   TodoItem: TodoItem;
   apiUrl: string= 'https://eshclouds-api-center-developer.azurewebsites.net/api/Bulletine';
-  localApiUrl: string = 'http://localhost:52665/api/bulletine';
+  // localApiUrl: string = 'http://localhost:52665/api/bscvbnm,.ulletine';
 
   ngOnInit() {
     this.getAllTodo();
@@ -24,19 +24,19 @@ export class AppComponent implements OnInit {
   deleteTodoItem(event) {
     console.log(event);
     this.TodoItem = event;
-    this.http.delete(this.localApiUrl + '/' + event.id)
+    this.http.delete(this.apiUrl + '/' + event.id)
     .subscribe(res => {
       this.getAllTodo();
     });
   }
   saveNotify(event) {
-    this.http.put(this.localApiUrl, event, {responseType: 'text'})
+    this.http.put(this.apiUrl, event, {responseType: 'text'})
     .subscribe(res => {
       this.getAllTodo();
     });
   }
   updateTodoItem(event) {
-    this.http.put(this.localApiUrl, event, {responseType: 'text'})
+    this.http.put(this.apiUrl, event, {responseType: 'text'})
     .subscribe(res => {
       this.getAllTodo();
     });
@@ -45,13 +45,13 @@ export class AppComponent implements OnInit {
     // should call api
     console.log(event);
     this.items = event;
-    this.http.post(this.localApiUrl, event, {responseType: 'text'})
+    this.http.post(this.apiUrl, event, {responseType: 'text'})
       .subscribe(res => {
         this.getAllTodo();
       });
   }
   getAllTodo() {
-      this.http.get<TodoItem[]>(this.localApiUrl)
+      this.http.get<TodoItem[]>(this.apiUrl)
       .subscribe(
         response => {
           this.TodoList = response;
